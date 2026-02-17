@@ -1,0 +1,13 @@
+{
+  "id": "brand-guidelines",
+  "name": "Brand Guidelines",
+  "version": "0.1.0",
+  "description": "Define brand colors, fonts, voice & assets and sync them into CLAUDE.md or AGENTS.md",
+  "slots": ["toolbar"],
+  "author": "",
+  "repository": "",
+  "min_app_version": "0.3.53",
+  "icon": "",
+  "required_commands": [],
+  "api_version": 1
+}
