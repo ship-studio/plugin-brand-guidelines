@@ -29,11 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User sees a clear error message when a site is bot-protected or unreachable
   4. Attempting to fetch a private IP, localhost, or non-http URL is rejected before any shell command runs
   5. User sees loading/progress indication while fetching is in progress
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — TDD: URL validation, SSRF prevention, fetch utilities, and bot detection (pure functions)
+- [ ] 01-02-PLAN.md — useUrlFetch hook, UrlInputView, and ExtractionView components
+- [ ] 01-03-PLAN.md — BrandModal view state machine integration, Modal header actions, CSS styles
 
 ### Phase 2: Token Extraction and AI Analysis
 **Goal**: Raw fetched content is parsed into semantic design tokens (named colors, classified fonts, voice notes) via CSS parsing and Claude CLI analysis
@@ -87,7 +88,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. URL Fetching and Security | 0/0 | Not started | - |
+| 1. URL Fetching and Security | 0/3 | Not started | - |
 | 2. Token Extraction and AI Analysis | 0/0 | Not started | - |
 | 3. Review UI and Entry Points | 0/0 | Not started | - |
 | 4. Border Radius and Spacing | 0/0 | Not started | - |
