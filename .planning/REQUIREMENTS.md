@@ -31,13 +31,13 @@
 
 ### Border Radius Extraction
 
-- [ ] **RADI-01**: Plugin extracts border-radius values from fetched CSS
-- [ ] **RADI-02**: AI identifies meaningful radius tokens (small, medium, large) from raw values
+- [x] **RADI-01**: Plugin extracts border-radius values from fetched CSS
+- [x] **RADI-02**: AI identifies meaningful radius tokens (small, medium, large) from raw values
 
 ### Spacing Extraction
 
-- [ ] **SPAC-01**: Plugin extracts spacing values (padding, margin, gap) from fetched CSS
-- [ ] **SPAC-02**: AI identifies a spacing scale from raw values
+- [x] **SPAC-01**: Plugin extracts spacing values (padding, margin, gap) from fetched CSS
+- [x] **SPAC-02**: AI identifies a spacing scale from raw values
 
 ### Review UI
 
@@ -102,10 +102,10 @@
 | FONT-02 | Phase 2 | Complete |
 | VOIC-01 | Phase 2 | Complete |
 | VOIC-02 | Phase 2 | Complete |
-| RADI-01 | Phase 4 | Pending |
-| RADI-02 | Phase 4 | Pending |
-| SPAC-01 | Phase 4 | Pending |
-| SPAC-02 | Phase 4 | Pending |
+| RADI-01 | Phase 4 | Complete |
+| RADI-02 | Phase 4 | Complete |
+| SPAC-01 | Phase 4 | Complete |
+| SPAC-02 | Phase 4 | Complete |
 | REVW-01 | Phase 3 | Complete |
 | REVW-02 | Phase 3 | Complete |
 | REVW-03 | Phase 3 | Complete |
