@@ -15,18 +15,18 @@
 
 ### Color Extraction
 
-- [ ] **COLR-01**: Plugin extracts raw color values from fetched CSS (hex, rgb, hsl, named colors)
-- [ ] **COLR-02**: Plugin deduplicates and normalizes colors to 5-12 meaningful values
+- [x] **COLR-01**: Plugin extracts raw color values from fetched CSS (hex, rgb, hsl, named colors)
+- [x] **COLR-02**: Plugin deduplicates and normalizes colors to 5-12 meaningful values
 - [ ] **COLR-03**: AI assigns semantic names to extracted colors (Primary, Accent, Background, etc.)
 
 ### Font Extraction
 
-- [ ] **FONT-01**: Plugin extracts font-family declarations from fetched CSS
+- [x] **FONT-01**: Plugin extracts font-family declarations from fetched CSS
 - [ ] **FONT-02**: AI classifies extracted fonts into heading/body roles
 
 ### Voice & Tone
 
-- [ ] **VOIC-01**: Plugin extracts visible text content from page HTML
+- [x] **VOIC-01**: Plugin extracts visible text content from page HTML
 - [ ] **VOIC-02**: AI analyzes page copy and generates voice/tone notes
 
 ### Border Radius Extraction
@@ -95,12 +95,12 @@
 | FETCH-03 | Phase 1 | Complete |
 | FETCH-04 | Phase 1 | Complete |
 | FETCH-05 | Phase 1 | Complete |
-| COLR-01 | Phase 2 | Pending |
-| COLR-02 | Phase 2 | Pending |
+| COLR-01 | Phase 2 | Complete |
+| COLR-02 | Phase 2 | Complete |
 | COLR-03 | Phase 2 | Pending |
-| FONT-01 | Phase 2 | Pending |
+| FONT-01 | Phase 2 | Complete |
 | FONT-02 | Phase 2 | Pending |
-| VOIC-01 | Phase 2 | Pending |
+| VOIC-01 | Phase 2 | Complete |
 | VOIC-02 | Phase 2 | Pending |
 | RADI-01 | Phase 4 | Pending |
 | RADI-02 | Phase 4 | Pending |
