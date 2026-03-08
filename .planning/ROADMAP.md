@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: URL Fetching and Security** - Reliable URL input, HTML/CSS fetching via curl, SSRF prevention, and bot detection
 - [ ] **Phase 2: Token Extraction and AI Analysis** - CSS parsing, Claude CLI integration, semantic color naming, font role classification, and voice/tone inference
 - [x] **Phase 3: Review UI and Entry Points** - Extraction preview with selective token acceptance, settings merge, and discoverable entry points (completed 2026-03-08)
-- [ ] **Phase 4: Border Radius and Spacing** - Schema extension for radii and spacing tokens with extraction and AI analysis
+- [x] **Phase 4: Border Radius and Spacing** - Schema extension for radii and spacing tokens with extraction and AI analysis (completed 2026-03-08)
 
 ## Phase Details
 
@@ -76,7 +76,7 @@ Plans:
   1. Plugin extracts border-radius values from CSS and AI identifies meaningful radius tokens (small, medium, large)
   2. Plugin extracts spacing values (padding, margin, gap) from CSS and AI identifies a spacing scale
   3. Extracted radii and spacing tokens appear in the review preview and are included in the markdown export
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 04-01-PLAN.md — Data layer: types, CSS extraction, AI prompt extension, merge, markdown export, pipeline wiring
@@ -92,4 +92,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. URL Fetching and Security | 3/3 | Complete | 2026-03-08 |
 | 2. Token Extraction and AI Analysis | 2/2 | Complete | 2026-03-08 |
 | 3. Review UI and Entry Points | 2/2 | Complete   | 2026-03-08 |
-| 4. Border Radius and Spacing | 1/2 | In Progress|  |
+| 4. Border Radius and Spacing | 2/2 | Complete   | 2026-03-08 |
