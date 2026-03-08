@@ -41,9 +41,9 @@
 
 ### Review UI
 
-- [ ] **REVW-01**: Plugin shows a preview of all extracted tokens (colors, fonts, voice, radii, spacing) before saving
-- [ ] **REVW-02**: User can selectively accept or reject individual extracted tokens
-- [ ] **REVW-03**: Plugin merges accepted tokens with existing brand settings (not replace)
+- [x] **REVW-01**: Plugin shows a preview of all extracted tokens (colors, fonts, voice, radii, spacing) before saving
+- [x] **REVW-02**: User can selectively accept or reject individual extracted tokens
+- [x] **REVW-03**: Plugin merges accepted tokens with existing brand settings (not replace)
 - [ ] **REVW-04**: User can re-extract from a different URL to refine results
 
 ### Entry Points
@@ -106,9 +106,9 @@
 | RADI-02 | Phase 4 | Pending |
 | SPAC-01 | Phase 4 | Pending |
 | SPAC-02 | Phase 4 | Pending |
-| REVW-01 | Phase 3 | Pending |
-| REVW-02 | Phase 3 | Pending |
-| REVW-03 | Phase 3 | Pending |
+| REVW-01 | Phase 3 | Complete |
+| REVW-02 | Phase 3 | Complete |
+| REVW-03 | Phase 3 | Complete |
 | REVW-04 | Phase 3 | Pending |
 | ENTR-01 | Phase 3 | Pending |
 | ENTR-02 | Phase 3 | Pending |
