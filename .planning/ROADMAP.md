@@ -33,11 +33,11 @@
   1. After extraction completes, each token category (colors, fonts, radii, spacing, voice) has a usage summary paragraph in the analysis result
   2. Usage summaries reference specific token names and values (e.g., "Use Primary #5C4EFA for CTAs and interactive elements")
   3. Usage summaries are stored in the AnalysisResult data structure and survive the extraction-to-review handoff
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md — Extend AnalysisResult, buildPrompt, and parseAnalysisResponse with usageSummaries (TDD)
+- [ ] 05-02-PLAN.md — Wire usageSummaries through prepareTokens and add ExtractionView hint
 
 ### Phase 6: Review UI for Usage Summaries
 **Goal**: Users can read, edit, and curate usage guidance before accepting tokens
@@ -76,6 +76,6 @@ Plans:
 | 2. Token Extraction and AI Analysis | v1.0 | 2/2 | Complete | 2026-03-08 |
 | 3. Review UI and Entry Points | v1.0 | 2/2 | Complete | 2026-03-08 |
 | 4. Border Radius and Spacing | v1.0 | 2/2 | Complete | 2026-03-08 |
-| 5. Usage Summary Generation | v1.1 | 0/? | Not started | - |
+| 5. Usage Summary Generation | v1.1 | 0/2 | Not started | - |
 | 6. Review UI for Usage Summaries | v1.1 | 0/? | Not started | - |
 | 7. Export with Usage Guide | v1.1 | 0/? | Not started | - |
