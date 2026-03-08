@@ -333,9 +333,9 @@ export const BRAND_GUIDELINES_CSS = `
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
+  padding: 32px 24px;
   text-align: center;
-  gap: 16px;
+  gap: 8px;
 }
 
 .bg-plugin-url-cta-headline {
@@ -358,7 +358,7 @@ export const BRAND_GUIDELINES_CSS = `
   text-decoration: underline;
   opacity: 0.5;
   color: inherit;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .bg-plugin-url-cta-manual:hover {
@@ -393,32 +393,62 @@ export const BRAND_GUIDELINES_CSS = `
 }
 
 /* Extraction progress */
-.bg-plugin-extraction {
-  padding: 24px 16px;
+.bg-plugin-extraction-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 24px 20px;
+  gap: 0;
+}
+
+.bg-plugin-extraction-progress-track {
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.bg-plugin-extraction-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
 }
 
 .bg-plugin-extraction-domain {
   font-size: 12px;
-  opacity: 0.6;
   margin-bottom: 20px;
+  text-align: center;
+}
+
+.bg-plugin-extraction-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
 }
 
 .bg-plugin-step {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
 }
 
 .bg-plugin-step-icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 12px;
-  margin-top: 1px;
+}
+
+.bg-plugin-step-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
 
 .bg-plugin-step-content {
@@ -428,22 +458,26 @@ export const BRAND_GUIDELINES_CSS = `
 
 .bg-plugin-step-label {
   font-size: 13px;
+  line-height: 1.3;
 }
 
 .bg-plugin-step-detail {
   font-size: 11px;
-  opacity: 0.6;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-/* Pulsing dot for active step */
-@keyframes bgPulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+/* Spinner for active step */
+@keyframes bgSpin {
+  to { transform: rotate(360deg); }
 }
 
-.bg-plugin-pulse {
-  animation: bgPulse 1.5s ease-in-out infinite;
+.bg-plugin-spinner {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid;
+  border-radius: 50%;
+  animation: bgSpin 0.8s linear infinite;
 }
 
 /* Error block */
@@ -484,6 +518,7 @@ export const BRAND_GUIDELINES_CSS = `
 .bg-plugin-url-input-wrapper {
   width: 100%;
   max-width: 360px;
+  margin-top: 4px;
 }
 
 .bg-plugin-url-hint {
@@ -521,6 +556,7 @@ export const BRAND_GUIDELINES_CSS = `
   background: none;
   border: none;
   cursor: pointer;
+  text-align: center;
   font-size: 12px;
   font-family: inherit;
   color: inherit;

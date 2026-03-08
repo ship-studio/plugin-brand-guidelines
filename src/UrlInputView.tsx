@@ -63,8 +63,8 @@ export function UrlInputView({ onExtract, initialUrl }: UrlInputViewProps) {
   const isDisabled = !value.trim() || !!error || !validated;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
         <input
           className="bg-plugin-input"
           type="text"
@@ -78,9 +78,11 @@ export function UrlInputView({ onExtract, initialUrl }: UrlInputViewProps) {
             width: '100%',
           }}
         />
-        <div className="bg-plugin-url-hint" style={{ color: hasTyped && error ? theme.error : 'transparent' }}>
-          {hasTyped && error ? error : '\u00A0'}
-        </div>
+        {hasTyped && error && (
+          <div className="bg-plugin-url-hint" style={{ color: theme.error }}>
+            {error}
+          </div>
+        )}
       </div>
       <button
         className="bg-plugin-extract-btn"

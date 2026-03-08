@@ -11,51 +11,56 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
   const theme = useTheme();
   const [detailsExpanded, setDetailsExpanded] = useState(false);
 
+  const doneCount = state.steps.filter((s) => s.status === 'done').length;
+  const total = state.steps.length;
+  const progressPct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {/* Header */}
-      <div className="bg-plugin-extraction-domain">
+    <div className="bg-plugin-extraction-view">
+      {/* Progress bar */}
+      <div className="bg-plugin-extraction-progress-track" style={{ backgroundColor: theme.bgTertiary }}>
+        <div
+          className="bg-plugin-extraction-progress-fill"
+          style={{
+            width: `${progressPct}%`,
+            backgroundColor: theme.action,
+          }}
+        />
+      </div>
+
+      {/* Domain label */}
+      <div className="bg-plugin-extraction-domain" style={{ color: theme.textMuted }}>
         Extracting from {state.domain}
       </div>
 
       {/* Steps */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div className="bg-plugin-extraction-steps">
         {state.steps.map((step) => (
           <div key={step.id} className="bg-plugin-step">
-            {/* Status indicator */}
             <span className="bg-plugin-step-icon">
               {step.status === 'done' && (
-                <span style={{ color: theme.success }}>&#10003;</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="7" fill={theme.success} opacity="0.15" />
+                  <path d="M4 7.2L6 9.2L10 5" stroke={theme.success} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               )}
               {step.status === 'active' && (
-                <span
-                  className="bg-plugin-pulse"
-                  style={{
-                    display: 'inline-block',
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    backgroundColor: theme.accent,
-                  }}
-                />
+                <span className="bg-plugin-spinner" style={{ borderColor: `${theme.action}33`, borderTopColor: theme.action }} />
               )}
               {step.status === 'error' && (
-                <span style={{ color: theme.error }}>&#10007;</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="7" fill={theme.error} opacity="0.15" />
+                  <path d="M5 5L9 9M9 5L5 9" stroke={theme.error} strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
               )}
               {step.status === 'pending' && (
                 <span
-                  style={{
-                    display: 'inline-block',
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    backgroundColor: theme.textMuted,
-                  }}
+                  className="bg-plugin-step-dot"
+                  style={{ backgroundColor: theme.textMuted, opacity: 0.3 }}
                 />
               )}
             </span>
 
-            {/* Content */}
             <div className="bg-plugin-step-content">
               <div
                 className="bg-plugin-step-label"
@@ -66,12 +71,13 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
                       : step.status === 'pending'
                         ? theme.textMuted
                         : theme.textPrimary,
+                  fontWeight: step.status === 'active' ? 500 : 400,
                 }}
               >
                 {step.label}
               </div>
               {step.detail && step.status === 'active' && (
-                <div className="bg-plugin-step-detail">
+                <div className="bg-plugin-step-detail" style={{ color: theme.textMuted }}>
                   {step.detail}
                 </div>
               )}
@@ -122,6 +128,7 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
         <button
           className="bg-plugin-cancel-btn"
           onClick={onCancel}
+          style={{ color: theme.textMuted }}
         >
           Cancel
         </button>
