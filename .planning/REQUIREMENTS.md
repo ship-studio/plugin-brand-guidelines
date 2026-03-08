@@ -7,10 +7,10 @@
 
 ### URL Input & Fetching
 
-- [ ] **FETCH-01**: User can enter a URL into an input field with real-time validation (http/https only)
-- [ ] **FETCH-02**: Plugin fetches page HTML and all linked CSS via curl through shell.exec()
-- [ ] **FETCH-03**: Plugin detects bot-protected pages (Cloudflare/Akamai challenges) and shows a clear error message
-- [ ] **FETCH-04**: Plugin validates URLs to prevent SSRF (rejects private IPs, localhost, non-http schemes)
+- [x] **FETCH-01**: User can enter a URL into an input field with real-time validation (http/https only)
+- [x] **FETCH-02**: Plugin fetches page HTML and all linked CSS via curl through shell.exec()
+- [x] **FETCH-03**: Plugin detects bot-protected pages (Cloudflare/Akamai challenges) and shows a clear error message
+- [x] **FETCH-04**: Plugin validates URLs to prevent SSRF (rejects private IPs, localhost, non-http schemes)
 - [ ] **FETCH-05**: Plugin shows loading state with progress indication during multi-step extraction
 
 ### Color Extraction
@@ -59,8 +59,8 @@
 
 ### Security
 
-- [ ] **SECR-01**: URLs are never interpolated into shell command strings — always passed as discrete arguments
-- [ ] **SECR-02**: URL input is sanitized to reject shell metacharacters
+- [x] **SECR-01**: URLs are never interpolated into shell command strings — always passed as discrete arguments
+- [x] **SECR-02**: URL input is sanitized to reject shell metacharacters
 
 ## v2 Requirements
 
@@ -90,10 +90,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FETCH-01 | Phase 1 | Pending |
-| FETCH-02 | Phase 1 | Pending |
-| FETCH-03 | Phase 1 | Pending |
-| FETCH-04 | Phase 1 | Pending |
+| FETCH-01 | Phase 1 | Complete |
+| FETCH-02 | Phase 1 | Complete |
+| FETCH-03 | Phase 1 | Complete |
+| FETCH-04 | Phase 1 | Complete |
 | FETCH-05 | Phase 1 | Pending |
 | COLR-01 | Phase 2 | Pending |
 | COLR-02 | Phase 2 | Pending |
@@ -115,8 +115,8 @@
 | AINT-01 | Phase 2 | Pending |
 | AINT-02 | Phase 2 | Pending |
 | AINT-03 | Phase 2 | Pending |
-| SECR-01 | Phase 1 | Pending |
-| SECR-02 | Phase 1 | Pending |
+| SECR-01 | Phase 1 | Complete |
+| SECR-02 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 27 total
