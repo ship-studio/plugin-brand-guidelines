@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { useShell } from './context';
 import { fetchHtml, fetchCss, extractStylesheetUrls, detectBotProtection } from './fetchUtils';
-import { extractColors, extractFonts, extractVisibleText, extractEmbeddedStyles } from './tokenExtraction';
+import { extractColors, extractFonts, extractRadii, extractSpacing, extractVisibleText, extractEmbeddedStyles } from './tokenExtraction';
 import { analyzeTokens, type AnalysisResult } from './analyzeTokens';
 
 export interface ExtractionStep {
@@ -165,8 +165,10 @@ export function useUrlFetch() {
         const allCss = [...cssContents, ...extractEmbeddedStyles(html)];
         const rawColors = extractColors(allCss);
         const fontNames = extractFonts(allCss);
+        const rawRadii = extractRadii(allCss);
+        const rawSpacing = extractSpacing(allCss);
         const visibleText = extractVisibleText(html);
-        const analysis = await analyzeTokens(shell, rawColors, fontNames, visibleText);
+        const analysis = await analyzeTokens(shell, rawColors, fontNames, visibleText, rawRadii, rawSpacing);
 
         if (cancelledRef.current) return;
 

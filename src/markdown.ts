@@ -52,6 +52,24 @@ export function generateBrandMarkdown(settings: BrandSettings): string {
     );
   }
 
+  // Border Radii
+  const validRadii = settings.radii.filter((r) => r.label && r.value);
+  if (validRadii.length > 0) {
+    sections.push(
+      '### Border Radii\n\n' +
+        validRadii.map((r) => `- **${r.label}**: \`${r.value}\``).join('\n'),
+    );
+  }
+
+  // Spacing
+  const validSpacing = settings.spacing.filter((s) => s.label && s.value);
+  if (validSpacing.length > 0) {
+    sections.push(
+      '### Spacing\n\n' +
+        validSpacing.map((s) => `- **${s.label}**: \`${s.value}\``).join('\n'),
+    );
+  }
+
   if (sections.length === 0) return '';
 
   return '## Brand Guidelines\n\n' + sections.join('\n\n');
@@ -133,6 +151,8 @@ export function hasBrandData(settings: BrandSettings): boolean {
     settings.colors.some((c) => c.name && c.hex) ||
     settings.fonts.some((f) => f.role && f.value) ||
     settings.voiceNotes.trim().length > 0 ||
-    settings.assets.some((a) => a.label && a.path)
+    settings.assets.some((a) => a.label && a.path) ||
+    settings.radii.some((r) => r.label && r.value) ||
+    settings.spacing.some((s) => s.label && s.value)
   );
 }

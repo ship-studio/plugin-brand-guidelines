@@ -104,6 +104,8 @@ describe('mergeTokens', () => {
       colors: [{ id: '10', name: 'New', hex: '#FF0000' }],
       fonts: [],
       voiceNotes: null,
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(baseSettings, accepted);
     expect(result.colors).toHaveLength(2);
@@ -116,6 +118,8 @@ describe('mergeTokens', () => {
       colors: [],
       fonts: [{ id: '20', role: 'Heading', value: 'Inter' }],
       voiceNotes: null,
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(baseSettings, accepted);
     expect(result.fonts).toHaveLength(2);
@@ -129,6 +133,8 @@ describe('mergeTokens', () => {
       colors: [],
       fonts: [],
       voiceNotes: 'New voice notes.',
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(emptyVoice, accepted);
     expect(result.voiceNotes).toBe('New voice notes.');
@@ -139,6 +145,8 @@ describe('mergeTokens', () => {
       colors: [],
       fonts: [],
       voiceNotes: 'Additional notes.',
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(baseSettings, accepted);
     expect(result.voiceNotes).toBe('Existing voice.\n\nAdditional notes.');
@@ -149,6 +157,8 @@ describe('mergeTokens', () => {
       colors: [],
       fonts: [],
       voiceNotes: null,
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(baseSettings, accepted);
     expect(result.voiceNotes).toBe('Existing voice.');
@@ -159,6 +169,8 @@ describe('mergeTokens', () => {
       colors: [{ id: '10', name: 'New', hex: '#FF0000' }],
       fonts: [],
       voiceNotes: null,
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(baseSettings, accepted);
     expect(result.assets).toEqual(baseSettings.assets);
@@ -169,6 +181,8 @@ describe('mergeTokens', () => {
       colors: [],
       fonts: [],
       voiceNotes: null,
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(baseSettings, accepted);
     expect(result.targetFile).toBe('CLAUDE.md');
@@ -179,6 +193,8 @@ describe('mergeTokens', () => {
       colors: [],
       fonts: [],
       voiceNotes: null,
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(baseSettings, accepted);
     expect(result.lastExportedHash).toBe('abc123');
@@ -199,6 +215,8 @@ describe('mergeTokens', () => {
       colors: [{ id: '10', name: 'Primary', hex: '#6C5CE7' }],
       fonts: [{ id: '20', role: 'Heading', value: 'Inter' }],
       voiceNotes: 'Brand voice notes.',
+      radii: [],
+      spacing: [],
     };
     const result = mergeTokens(empty, accepted);
     expect(result.colors).toHaveLength(1);

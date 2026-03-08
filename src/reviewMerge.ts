@@ -6,7 +6,7 @@
  */
 
 import type { AnalysisResult } from './analyzeTokens';
-import type { BrandColor, BrandFont, BrandSettings } from './types';
+import type { BrandColor, BrandFont, BrandRadius, BrandSpacing, BrandSettings } from './types';
 
 // ── prepareTokens ──────────────────────────────────────────────────────────
 
@@ -18,6 +18,8 @@ export function prepareTokens(analysis: AnalysisResult): {
   colors: BrandColor[];
   fonts: BrandFont[];
   voiceNotes: string;
+  radii: BrandRadius[];
+  spacing: BrandSpacing[];
 } {
   const colors: BrandColor[] = analysis.colors.map((c) => ({
     id: crypto.randomUUID(),
@@ -31,7 +33,19 @@ export function prepareTokens(analysis: AnalysisResult): {
     value: f.value,
   }));
 
-  return { colors, fonts, voiceNotes: analysis.voiceNotes };
+  const radii: BrandRadius[] = (analysis.radii || []).map((r) => ({
+    id: crypto.randomUUID(),
+    label: r.label,
+    value: r.value,
+  }));
+
+  const spacing: BrandSpacing[] = (analysis.spacing || []).map((s) => ({
+    id: crypto.randomUUID(),
+    label: s.label,
+    value: s.value,
+  }));
+
+  return { colors, fonts, voiceNotes: analysis.voiceNotes, radii, spacing };
 }
 
 // ── mergeTokens ─────────────────────────────────────────────────────────────
@@ -51,6 +65,8 @@ export function mergeTokens(
     colors: BrandColor[];
     fonts: BrandFont[];
     voiceNotes: string | null;
+    radii: BrandRadius[];
+    spacing: BrandSpacing[];
   },
 ): BrandSettings {
   let voiceNotes = existing.voiceNotes;
@@ -68,5 +84,7 @@ export function mergeTokens(
     colors: [...existing.colors, ...accepted.colors],
     fonts: [...existing.fonts, ...accepted.fonts],
     voiceNotes,
+    radii: [...existing.radii, ...accepted.radii],
+    spacing: [...existing.spacing, ...accepted.spacing],
   };
 }
