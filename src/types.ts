@@ -16,11 +16,25 @@ export interface BrandAsset {
   path: string;
 }
 
+export interface BrandRadius {
+  id: string;
+  label: string;  // AI-assigned: "Button", "Card", "Pill", "Circle"
+  value: string;  // CSS value: "4px", "0.5rem", "50%"
+}
+
+export interface BrandSpacing {
+  id: string;
+  label: string;  // AI-assigned: "Tight", "Base", "Relaxed", "Spacious"
+  value: string;  // CSS value: "8px", "1rem", "24px"
+}
+
 export interface BrandSettings {
   colors: BrandColor[];
   fonts: BrandFont[];
   voiceNotes: string;
   assets: BrandAsset[];
+  radii: BrandRadius[];
+  spacing: BrandSpacing[];
   targetFile: 'CLAUDE.md' | 'AGENTS.md';
   lastExportedHash: string;
 }

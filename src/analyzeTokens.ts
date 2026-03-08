@@ -14,6 +14,8 @@ export interface AnalysisResult {
   colors: Array<{ name: string; hex: string }>;
   fonts: Array<{ role: string; value: string }>;
   voiceNotes: string;
+  radii: Array<{ label: string; value: string }>;
+  spacing: Array<{ label: string; value: string }>;
 }
 
 interface Shell {
@@ -39,6 +41,8 @@ export function buildPrompt(
   colors: RawColor[],
   fonts: string[],
   visibleText: string,
+  radii: string[] = [],
+  spacing: string[] = [],
 ): string {
   const colorList = colors.length > 0
     ? colors.map(c => c.varName ? `${c.hex} (${c.varName})` : c.hex).join('\n')
@@ -47,6 +51,9 @@ export function buildPrompt(
   const fontList = fonts.length > 0
     ? fonts.join(', ')
     : '(none found)';
+
+  const radiiList = radii.length > 0 ? radii.join(', ') : '(none found)';
+  const spacingList = spacing.length > 0 ? spacing.join(', ') : '(none found)';
 
   const instructions = `You are a brand design analyst. Analyze the following extracted design tokens from a website and produce a structured brand analysis.
 
@@ -58,6 +65,12 @@ ${fontList}
 
 ## Page Text
 ${visibleText}
+
+## Extracted Border Radii
+${radiiList}
+
+## Extracted Spacing Values
+${spacingList}
 
 ## Instructions
 
@@ -71,11 +84,17 @@ ${visibleText}
    - Personality traits
    - Do's and Don'ts for writing in this brand voice
 
+4. Select 3-6 meaningful border-radius values and assign descriptive labels (e.g. 'Button', 'Card', 'Pill', 'Circle').
+
+5. Select 4-8 spacing values that form a coherent scale and assign descriptive labels (e.g. 'Tight', 'Base', 'Relaxed', 'Spacious').
+
 Output ONLY valid JSON matching this exact schema, with no markdown fences and no explanation:
 {
   "colors": [{"name": "string", "hex": "#xxxxxx"}],
   "fonts": [{"role": "string", "value": "string"}],
-  "voiceNotes": "string with bullet points using - prefix"
+  "voiceNotes": "string with bullet points using - prefix",
+  "radii": [{"label": "string", "value": "string"}],
+  "spacing": [{"label": "string", "value": "string"}]
 }`;
 
   // Truncate if needed
@@ -140,8 +159,10 @@ export async function analyzeTokens(
   colors: RawColor[],
   fonts: string[],
   visibleText: string,
+  radii: string[] = [],
+  spacing: string[] = [],
 ): Promise<AnalysisResult> {
-  const prompt = buildPrompt(colors, fonts, visibleText);
+  const prompt = buildPrompt(colors, fonts, visibleText, radii, spacing);
 
   const result = await shell.exec(
     'claude',

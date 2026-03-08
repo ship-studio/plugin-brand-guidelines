@@ -11,6 +11,8 @@ describe('prepareTokens', () => {
       colors: [{ name: 'Primary', hex: '#6C5CE7' }],
       fonts: [],
       voiceNotes: '',
+      radii: [],
+      spacing: [],
     };
     const result = prepareTokens(analysis);
     expect(result.colors).toHaveLength(1);
@@ -25,6 +27,8 @@ describe('prepareTokens', () => {
       colors: [],
       fonts: [{ role: 'Heading', value: 'Inter' }],
       voiceNotes: '',
+      radii: [],
+      spacing: [],
     };
     const result = prepareTokens(analysis);
     expect(result.fonts).toHaveLength(1);
@@ -39,6 +43,8 @@ describe('prepareTokens', () => {
       colors: [],
       fonts: [],
       voiceNotes: 'Professional but friendly.',
+      radii: [],
+      spacing: [],
     };
     const result = prepareTokens(analysis);
     expect(result.voiceNotes).toBe('Professional but friendly.');
@@ -49,6 +55,8 @@ describe('prepareTokens', () => {
       colors: [],
       fonts: [],
       voiceNotes: '',
+      radii: [],
+      spacing: [],
     };
     const result = prepareTokens(analysis);
     expect(result.colors).toEqual([]);
@@ -67,9 +75,11 @@ describe('prepareTokens', () => {
         { role: 'Body', value: 'Arial' },
       ],
       voiceNotes: '',
+      radii: [],
+      spacing: [],
     };
     const result = prepareTokens(analysis);
-    const ids = [...result.colors.map((c) => c.id), ...result.fonts.map((f) => f.id)];
+    const ids =[...result.colors.map((c) => c.id), ...result.fonts.map((f) => f.id)];
     const unique = new Set(ids);
     expect(unique.size).toBe(ids.length);
   });
@@ -83,6 +93,8 @@ describe('mergeTokens', () => {
     fonts: [{ id: '2', role: 'Body', value: 'Arial' }],
     voiceNotes: 'Existing voice.',
     assets: [{ id: '3', label: 'Logo', path: 'logo.svg' }],
+    radii: [],
+    spacing: [],
     targetFile: 'CLAUDE.md',
     lastExportedHash: 'abc123',
   };
@@ -178,6 +190,8 @@ describe('mergeTokens', () => {
       fonts: [],
       voiceNotes: '',
       assets: [],
+      radii: [],
+      spacing: [],
       targetFile: 'CLAUDE.md',
       lastExportedHash: '',
     };

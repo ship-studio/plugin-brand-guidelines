@@ -300,6 +300,58 @@ export function extractVisibleText(html: string): string {
 }
 
 /**
+ * Extract unique border-radius values from CSS text arrays.
+ * Filters out zero, inherit, initial, unset, revert, and none values.
+ */
+export function extractRadii(cssTexts: string[]): string[] {
+  const values = new Set<string>();
+  const combined = cssTexts.join('\n');
+  const skipValues = new Set(['0', '0px', 'inherit', 'initial', 'unset', 'revert', 'none']);
+
+  const re = new RegExp(
+    /border(?:-top-left|-top-right|-bottom-left|-bottom-right)?-radius\s*:\s*([^;}\n]+)/gi.source,
+    'gi',
+  );
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(combined))) {
+    const val = match[1].trim().toLowerCase();
+    if (!skipValues.has(val)) {
+      values.add(val);
+    }
+  }
+
+  return Array.from(values);
+}
+
+/**
+ * Extract unique spacing values from CSS text arrays.
+ * Splits shorthand properties and filters out zero, auto, inherit, etc.
+ */
+export function extractSpacing(cssTexts: string[]): string[] {
+  const values = new Set<string>();
+  const combined = cssTexts.join('\n');
+  const skipValues = new Set([
+    '0', '0px', 'auto', 'inherit', 'initial', 'unset', 'revert', 'none', 'normal',
+  ]);
+
+  const re = new RegExp(
+    /(?:padding|margin|gap|row-gap|column-gap)(?:-(?:top|right|bottom|left))?\s*:\s*([^;}\n]+)/gi.source,
+    'gi',
+  );
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(combined))) {
+    const parts = match[1].trim().toLowerCase().split(/\s+/);
+    for (const part of parts) {
+      if (!skipValues.has(part) && /^[\d.]/.test(part)) {
+        values.add(part);
+      }
+    }
+  }
+
+  return Array.from(values);
+}
+
+/**
  * Extract CSS from <style> blocks in HTML.
  */
 export function extractEmbeddedStyles(html: string): string[] {

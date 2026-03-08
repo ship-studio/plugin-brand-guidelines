@@ -7,6 +7,8 @@ const DEFAULT_SETTINGS: BrandSettings = {
   fonts: [],
   voiceNotes: '',
   assets: [],
+  radii: [],
+  spacing: [],
   targetFile: 'CLAUDE.md',
   lastExportedHash: '',
 };
