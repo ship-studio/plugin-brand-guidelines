@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Usage Guide
-status: ready-to-plan
-stopped_at: Roadmap created, ready to plan Phase 5
-last_updated: "2026-03-08"
+status: planning
+stopped_at: Phase 5 context gathered
+last_updated: "2026-03-08T14:24:10.874Z"
 last_activity: 2026-03-08 — v1.1 roadmap created
 progress:
   total_phases: 3
@@ -48,6 +48,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-08
-Stopped at: v1.1 roadmap created, ready to plan Phase 5
-Resume file: None
+Last session: 2026-03-08T14:24:10.872Z
+Stopped at: Phase 5 context gathered
+Resume file: .planning/phases/05-usage-summary-generation/05-CONTEXT.md
