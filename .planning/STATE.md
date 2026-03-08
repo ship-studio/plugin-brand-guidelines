@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Usage Guide
-status: defining-requirements
-stopped_at: Defining requirements
+status: ready-to-plan
+stopped_at: Roadmap created, ready to plan Phase 5
 last_updated: "2026-03-08"
-last_activity: 2026-03-08 — Milestone v1.1 started
+last_activity: 2026-03-08 — v1.1 roadmap created
 progress:
-  total_phases: 0
+  total_phases: 3
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -21,14 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** Extracting design tokens from any URL with accuracy that amazes users
-**Current focus:** Defining requirements for v1.1 Usage Guide
+**Current focus:** Phase 5 - Usage Summary Generation
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-03-08 — Milestone v1.1 started
+Phase: 5 of 7 (Usage Summary Generation)
+Plan: 0 of ? in current phase
+Status: Ready to plan
+Last activity: 2026-03-08 — v1.1 roadmap created
+
+Progress: [..........] 0% (v1.1 phases)
 
 ## Accumulated Context
 
@@ -47,5 +49,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Defining requirements for v1.1
+Stopped at: v1.1 roadmap created, ready to plan Phase 5
 Resume file: None
