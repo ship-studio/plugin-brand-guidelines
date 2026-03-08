@@ -5,6 +5,8 @@ import { ColorsSection } from './ColorsSection';
 import { FontsSection } from './FontsSection';
 import { VoiceSection } from './VoiceSection';
 import { AssetsSection } from './AssetsSection';
+import { RadiiSection } from './RadiiSection';
+import { SpacingSection } from './SpacingSection';
 import { ExportFooter } from './ExportFooter';
 import { UrlInputView } from './UrlInputView';
 import { ExtractionView } from './ExtractionView';
@@ -14,9 +16,9 @@ import { useFileSync } from './useFileSync';
 import { useUrlFetch } from './useUrlFetch';
 import { mergeTokens } from './reviewMerge';
 import { hasBrandData } from './markdown';
-import type { BrandColor, BrandFont } from './types';
+import type { BrandColor, BrandFont, BrandRadius, BrandSpacing } from './types';
 
-type Tab = 'colors' | 'fonts' | 'voice' | 'assets';
+type Tab = 'colors' | 'fonts' | 'voice' | 'assets' | 'radii' | 'spacing';
 type ModalView = 'url-cta' | 'tabs' | 'url-inline' | 'extracting' | 'review';
 
 const TABS: { key: Tab; label: string }[] = [
@@ -24,6 +26,8 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'fonts', label: 'Fonts' },
   { key: 'voice', label: 'Voice' },
   { key: 'assets', label: 'Assets' },
+  { key: 'radii', label: 'Radii' },
+  { key: 'spacing', label: 'Spacing' },
 ];
 
 export function BrandModal({ onClose }: { onClose: () => void }) {
@@ -52,7 +56,7 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   // Check sync on mount and when settings change
   useEffect(() => {
     if (loaded) checkSync();
-  }, [loaded, settings.colors, settings.fonts, settings.voiceNotes, settings.assets, settings.targetFile, settings.lastExportedHash]);
+  }, [loaded, settings.colors, settings.fonts, settings.voiceNotes, settings.assets, settings.radii, settings.spacing, settings.targetFile, settings.lastExportedHash]);
 
   // Watch fetch state for completion
   useEffect(() => {
@@ -78,13 +82,15 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
     }
   };
 
-  const handleApply = (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null) => {
-    updateSettings(prev => mergeTokens(prev, { colors, fonts, voiceNotes }));
+  const handleApply = (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null, radii: BrandRadius[], spacing: BrandSpacing[]) => {
+    updateSettings(prev => mergeTokens(prev, { colors, fonts, voiceNotes, radii, spacing }));
 
     const parts: string[] = [];
     if (colors.length) parts.push(`${colors.length} colors`);
     if (fonts.length) parts.push(`${fonts.length} fonts`);
     if (voiceNotes) parts.push('voice notes');
+    if (radii.length) parts.push(`${radii.length} radii`);
+    if (spacing.length) parts.push(`${spacing.length} spacing`);
     showToast(`Applied ${parts.join(', ')}`, 'success');
 
     reset();
@@ -253,6 +259,18 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
         {activeTab === 'assets' && (
           <AssetsSection
             assets={settings.assets}
+            updateSettings={updateSettings}
+          />
+        )}
+        {activeTab === 'radii' && (
+          <RadiiSection
+            radii={settings.radii}
+            updateSettings={updateSettings}
+          />
+        )}
+        {activeTab === 'spacing' && (
+          <SpacingSection
+            spacing={settings.spacing}
             updateSettings={updateSettings}
           />
         )}

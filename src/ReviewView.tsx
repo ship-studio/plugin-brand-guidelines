@@ -2,23 +2,25 @@ import { useState, useMemo, useCallback } from 'react';
 import { useTheme } from './context';
 import { prepareTokens } from './reviewMerge';
 import type { AnalysisResult } from './analyzeTokens';
-import type { BrandColor, BrandFont } from './types';
+import type { BrandColor, BrandFont, BrandRadius, BrandSpacing } from './types';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export interface ReviewViewProps {
   analysis: AnalysisResult;
-  onApply: (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null) => void;
+  onApply: (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null, radii: BrandRadius[], spacing: BrandSpacing[]) => void;
   onTryAnother: () => void;
   onDiscard: () => void;
 }
 
-type ReviewTab = 'colors' | 'fonts' | 'voice';
+type ReviewTab = 'colors' | 'fonts' | 'voice' | 'radii' | 'spacing';
 
 const TABS: { key: ReviewTab; label: string }[] = [
   { key: 'colors', label: 'Colors' },
   { key: 'fonts', label: 'Fonts' },
   { key: 'voice', label: 'Voice' },
+  { key: 'radii', label: 'Radii' },
+  { key: 'spacing', label: 'Spacing' },
 ];
 
 // ── Component ──────────────────────────────────────────────────────────────
@@ -34,6 +36,8 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
   const [colors, setColors] = useState<BrandColor[]>(initial.colors);
   const [fonts, setFonts] = useState<BrandFont[]>(initial.fonts);
   const [voiceNotes, setVoiceNotes] = useState(initial.voiceNotes);
+  const [radii, setRadii] = useState<BrandRadius[]>(initial.radii);
+  const [spacing, setSpacing] = useState<BrandSpacing[]>(initial.spacing);
 
   // Selection maps keyed by token ID (or 'voice' for voice notes)
   const [selected, setSelected] = useState<Record<string, boolean>>(() => {
@@ -41,6 +45,8 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
     initial.colors.forEach((c) => { map[c.id] = true; });
     initial.fonts.forEach((f) => { map[f.id] = true; });
     if (initial.voiceNotes) map['voice'] = true;
+    initial.radii.forEach((r) => { map[r.id] = true; });
+    initial.spacing.forEach((s) => { map[s.id] = true; });
     return map;
   });
 
@@ -68,21 +74,37 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
     setFonts((prev) => prev.map((f) => (f.id === id ? { ...f, [field]: value } : f)));
   }, []);
 
+  // Radius editing
+  const updateRadius = useCallback((id: string, field: 'label' | 'value', value: string) => {
+    setRadii((prev) => prev.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
+  }, []);
+
+  // Spacing editing
+  const updateSpacingItem = useCallback((id: string, field: 'label' | 'value', value: string) => {
+    setSpacing((prev) => prev.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
+  }, []);
+
   // Counts
   const selectedColorIds = colors.filter((c) => selected[c.id]).map((c) => c.id);
   const selectedFontIds = fonts.filter((f) => selected[f.id]).map((f) => f.id);
   const voiceSelected = !!selected['voice'] && voiceNotes.trim().length > 0;
-  const totalSelected = selectedColorIds.length + selectedFontIds.length + (voiceSelected ? 1 : 0);
+  const selectedRadiiIds = radii.filter((r) => selected[r.id]).map((r) => r.id);
+  const selectedSpacingIds = spacing.filter((s) => selected[s.id]).map((s) => s.id);
+  const totalSelected = selectedColorIds.length + selectedFontIds.length + (voiceSelected ? 1 : 0) + selectedRadiiIds.length + selectedSpacingIds.length;
 
   const allColorsSelected = colors.length > 0 && selectedColorIds.length === colors.length;
   const allFontsSelected = fonts.length > 0 && selectedFontIds.length === fonts.length;
+  const allRadiiSelected = radii.length > 0 && selectedRadiiIds.length === radii.length;
+  const allSpacingSelected = spacing.length > 0 && selectedSpacingIds.length === spacing.length;
 
   // Apply handler
   const handleApply = () => {
     const acceptedColors = colors.filter((c) => selected[c.id]);
     const acceptedFonts = fonts.filter((f) => selected[f.id]);
     const acceptedVoice = voiceSelected ? voiceNotes : null;
-    onApply(acceptedColors, acceptedFonts, acceptedVoice);
+    const acceptedRadii = radii.filter((r) => selected[r.id]);
+    const acceptedSpacing = spacing.filter((s) => selected[s.id]);
+    onApply(acceptedColors, acceptedFonts, acceptedVoice, acceptedRadii, acceptedSpacing);
   };
 
   return (
@@ -127,6 +149,16 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
             {tab.key === 'fonts' && fonts.length > 0 && (
               <span style={{ marginLeft: 4, opacity: 0.5, fontSize: 11 }}>
                 ({selectedFontIds.length})
+              </span>
+            )}
+            {tab.key === 'radii' && radii.length > 0 && (
+              <span style={{ marginLeft: 4, opacity: 0.5, fontSize: 11 }}>
+                ({selectedRadiiIds.length})
+              </span>
+            )}
+            {tab.key === 'spacing' && spacing.length > 0 && (
+              <span style={{ marginLeft: 4, opacity: 0.5, fontSize: 11 }}>
+                ({selectedSpacingIds.length})
               </span>
             )}
           </button>
@@ -286,6 +318,108 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                     style={{ borderColor: theme.border, flex: 1 }}
                   />
                 </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Radii tab */}
+        {activeTab === 'radii' && (
+          <div className="bg-plugin-section">
+            {radii.length === 0 ? (
+              <div className="bg-plugin-review-empty" style={{ color: theme.textMuted }}>
+                No border radii extracted
+              </div>
+            ) : (
+              <>
+                <div className="bg-plugin-review-section-header">
+                  <span style={{ fontSize: 11, fontWeight: 500, color: theme.textSecondary }}>
+                    {selectedRadiiIds.length} of {radii.length} selected
+                  </span>
+                  <button
+                    className="bg-plugin-review-select-toggle"
+                    onClick={() => toggleAll(radii.map((r) => r.id), !allRadiiSelected)}
+                    style={{ color: theme.accent }}
+                  >
+                    {allRadiiSelected ? 'Deselect all' : 'Select all'}
+                  </button>
+                </div>
+                {radii.map((radius) => (
+                  <div key={radius.id} className="bg-plugin-row">
+                    <input
+                      type="checkbox"
+                      className="bg-plugin-review-checkbox"
+                      checked={!!selected[radius.id]}
+                      onChange={() => toggle(radius.id)}
+                      style={{ '--checkbox-accent': theme.accent } as React.CSSProperties}
+                    />
+                    <input
+                      className="bg-plugin-input bg-plugin-input--name"
+                      value={radius.label}
+                      onChange={(e) => updateRadius(radius.id, 'label', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                      placeholder="Label"
+                    />
+                    <input
+                      className="bg-plugin-input bg-plugin-input--hex"
+                      value={radius.value}
+                      onChange={(e) => updateRadius(radius.id, 'value', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                      placeholder="Value"
+                    />
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Spacing tab */}
+        {activeTab === 'spacing' && (
+          <div className="bg-plugin-section">
+            {spacing.length === 0 ? (
+              <div className="bg-plugin-review-empty" style={{ color: theme.textMuted }}>
+                No spacing values extracted
+              </div>
+            ) : (
+              <>
+                <div className="bg-plugin-review-section-header">
+                  <span style={{ fontSize: 11, fontWeight: 500, color: theme.textSecondary }}>
+                    {selectedSpacingIds.length} of {spacing.length} selected
+                  </span>
+                  <button
+                    className="bg-plugin-review-select-toggle"
+                    onClick={() => toggleAll(spacing.map((s) => s.id), !allSpacingSelected)}
+                    style={{ color: theme.accent }}
+                  >
+                    {allSpacingSelected ? 'Deselect all' : 'Select all'}
+                  </button>
+                </div>
+                {spacing.map((item) => (
+                  <div key={item.id} className="bg-plugin-row">
+                    <input
+                      type="checkbox"
+                      className="bg-plugin-review-checkbox"
+                      checked={!!selected[item.id]}
+                      onChange={() => toggle(item.id)}
+                      style={{ '--checkbox-accent': theme.accent } as React.CSSProperties}
+                    />
+                    <input
+                      className="bg-plugin-input bg-plugin-input--name"
+                      value={item.label}
+                      onChange={(e) => updateSpacingItem(item.id, 'label', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                      placeholder="Label"
+                    />
+                    <input
+                      className="bg-plugin-input bg-plugin-input--hex"
+                      value={item.value}
+                      onChange={(e) => updateSpacingItem(item.id, 'value', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                      placeholder="Value"
+                    />
+                  </div>
+                ))}
               </>
             )}
           </div>
