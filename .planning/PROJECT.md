@@ -47,7 +47,14 @@ Extracting design tokens from any URL with accuracy that amazes users — reliab
 
 <!-- Current scope. Building toward these. -->
 
-(None — planning next milestone)
+## Current Milestone: v1.1 Usage Guide
+
+**Goal:** Add AI-generated usage guidance per token category so exported brand guidelines explain *how* to use tokens, not just list them.
+
+**Target features:**
+- AI generates usage summaries per category (colors, fonts, radii, spacing, voice) during extraction
+- Per-tab editable usage summaries in the Review UI
+- Exported markdown includes a "Usage Guide" section
 
 ### Out of Scope
 
@@ -92,4 +99,4 @@ curl-based fetching works for most brand sites; Dembrandt deferred to v2 for JS-
 | Defensive `|| []` in prepareTokens | Backward compat with older AnalysisResult objects missing new fields | ✓ Good — prevents runtime errors |
 
 ---
-*Last updated: 2026-03-08 after v1.0 milestone*
+*Last updated: 2026-03-08 after v1.1 milestone started*

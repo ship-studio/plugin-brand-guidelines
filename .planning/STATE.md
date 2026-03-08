@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Start from URL
-status: shipped
-stopped_at: Milestone v1.0 complete
+milestone: v1.1
+milestone_name: Usage Guide
+status: defining-requirements
+stopped_at: Defining requirements
 last_updated: "2026-03-08"
-last_activity: 2026-03-08 — Milestone v1.0 shipped
+last_activity: 2026-03-08 — Milestone v1.1 started
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 9
-  completed_plans: 9
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,36 +21,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** Extracting design tokens from any URL with accuracy that amazes users
-**Current focus:** Planning next milestone
+**Current focus:** Defining requirements for v1.1 Usage Guide
 
 ## Current Position
 
-Milestone v1.0 shipped 2026-03-08.
-All 4 phases complete, 9/9 plans executed, 27/27 requirements satisfied.
-
-Progress: [██████████] 100% — SHIPPED
-
-## Performance Metrics
-
-**Velocity:**
-- Total plans completed: 9
-- Average duration: 2.9min
-- Total execution time: ~23 min
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 01 | 3 | 11min | 3.7min |
-| 02 | 2 | 5min | 2.5min |
-| 03 | 2 | 4min | 2.0min |
-| 04 | 2 | 5min | 2.5min |
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-08 — Milestone v1.1 started
 
 ## Accumulated Context
 
 ### Decisions
 
-All decisions archived in PROJECT.md Key Decisions table.
+All v1.0 decisions archived in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
@@ -58,10 +42,10 @@ None.
 
 ### Blockers/Concerns
 
-None — milestone shipped.
+None.
 
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Milestone v1.0 complete
+Stopped at: Defining requirements for v1.1
 Resume file: None
