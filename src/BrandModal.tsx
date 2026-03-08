@@ -53,7 +53,7 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   // Watch fetch state for completion
   useEffect(() => {
     if (fetchState.status === 'done') {
-      // Phase 1: result stored, show tabs (Phase 3 will add review flow)
+      // result.analysis contains AI-analyzed colors/fonts/voiceNotes (Phase 3 will add review flow)
       setView('tabs');
     }
     // error state: stay on extracting view (ExtractionView handles error display)

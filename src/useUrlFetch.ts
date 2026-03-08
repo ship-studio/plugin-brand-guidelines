@@ -1,6 +1,8 @@
 import { useState, useRef, useCallback } from 'react';
 import { useShell } from './context';
 import { fetchHtml, fetchCss, extractStylesheetUrls, detectBotProtection } from './fetchUtils';
+import { extractColors, extractFonts, extractVisibleText, extractEmbeddedStyles } from './tokenExtraction';
+import { analyzeTokens, type AnalysisResult } from './analyzeTokens';
 
 export interface ExtractionStep {
   id: string;
@@ -22,6 +24,10 @@ export interface FetchResult {
   url: string;
 }
 
+export interface ExtractionResult extends FetchResult {
+  analysis: AnalysisResult;
+}
+
 const INITIAL_STATE: ExtractionState = {
   status: 'idle',
   steps: [],
@@ -32,6 +38,7 @@ function makeSteps(): ExtractionStep[] {
   return [
     { id: 'fetch', label: 'Fetching page...', status: 'pending' },
     { id: 'css', label: 'Loading stylesheets...', status: 'pending' },
+    { id: 'analyze', label: 'Analyzing design tokens...', status: 'pending' },
   ];
 }
 
@@ -56,13 +63,17 @@ function mapError(err: unknown): { headline: string; detail: string } {
     return { headline: 'Page too large to process', detail: message };
   }
 
+  if (message.includes('AI analysis failed') || message.includes('Failed to parse AI')) {
+    return { headline: 'Could not analyze design tokens', detail: message };
+  }
+
   return { headline: 'Could not fetch page', detail: message };
 }
 
 export function useUrlFetch() {
   const shell = useShell();
   const [state, setState] = useState<ExtractionState>(INITIAL_STATE);
-  const [result, setResult] = useState<FetchResult | null>(null);
+  const [result, setResult] = useState<ExtractionResult | null>(null);
   const cancelledRef = useRef(false);
 
   const startExtraction = useCallback(
@@ -145,9 +156,28 @@ export function useUrlFetch() {
           steps: updateStep(prev.steps, 'css', { status: 'done', detail: undefined }),
         }));
 
+        // Step 3: Analyze design tokens with AI
+        setState((prev) => ({
+          ...prev,
+          steps: updateStep(prev.steps, 'analyze', { status: 'active' }),
+        }));
+
+        const allCss = [...cssContents, ...extractEmbeddedStyles(html)];
+        const rawColors = extractColors(allCss);
+        const fontNames = extractFonts(allCss);
+        const visibleText = extractVisibleText(html);
+        const analysis = await analyzeTokens(shell, rawColors, fontNames, visibleText);
+
+        if (cancelledRef.current) return;
+
+        setState((prev) => ({
+          ...prev,
+          steps: updateStep(prev.steps, 'analyze', { status: 'done' }),
+        }));
+
         // Done
-        const fetchResult: FetchResult = { html, css: cssContents, url };
-        setResult(fetchResult);
+        const extractionResult: ExtractionResult = { html, css: cssContents, url, analysis };
+        setResult(extractionResult);
         setState((prev) => ({ ...prev, status: 'done' }));
       } catch (err) {
         if (cancelledRef.current) return;
