@@ -76,10 +76,11 @@ Plans:
   1. Plugin extracts border-radius values from CSS and AI identifies meaningful radius tokens (small, medium, large)
   2. Plugin extracts spacing values (padding, margin, gap) from CSS and AI identifies a spacing scale
   3. Extracted radii and spacing tokens appear in the review preview and are included in the markdown export
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 04-01: TBD
+- [ ] 04-01-PLAN.md — Data layer: types, CSS extraction, AI prompt extension, merge, markdown export, pipeline wiring
+- [ ] 04-02-PLAN.md — UI layer: RadiiSection, SpacingSection components, BrandModal and ReviewView tab extension
 
 ## Progress
 
@@ -91,4 +92,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. URL Fetching and Security | 3/3 | Complete | 2026-03-08 |
 | 2. Token Extraction and AI Analysis | 2/2 | Complete | 2026-03-08 |
 | 3. Review UI and Entry Points | 2/2 | Complete   | 2026-03-08 |
-| 4. Border Radius and Spacing | 0/0 | Not started | - |
+| 4. Border Radius and Spacing | 0/2 | Not started | - |
