@@ -46,11 +46,11 @@ Plans:
   3. Plugin extracts visible page text and AI generates voice/tone notes describing the brand's communication style
   4. All AI analysis runs via `claude -p` through shell.exec() with no API key configuration required from the user
   5. CSS input to Claude is truncated to prevent buffer overflow, and all shell calls have explicit timeouts
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — TDD: Pure extraction functions for CSS colors, fonts, and visible text
+- [ ] 02-02-PLAN.md — Claude CLI integration for AI analysis and pipeline wiring into useUrlFetch
 
 ### Phase 3: Review UI and Entry Points
 **Goal**: Users can preview all extracted tokens, selectively accept or reject them, and merge accepted tokens into their existing brand settings
@@ -89,6 +89,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. URL Fetching and Security | 0/3 | Not started | - |
-| 2. Token Extraction and AI Analysis | 0/0 | Not started | - |
+| 2. Token Extraction and AI Analysis | 0/2 | Not started | - |
 | 3. Review UI and Entry Points | 0/0 | Not started | - |
 | 4. Border Radius and Spacing | 0/0 | Not started | - |
