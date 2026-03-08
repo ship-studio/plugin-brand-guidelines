@@ -568,4 +568,102 @@ export const BRAND_GUIDELINES_CSS = `
 .bg-plugin-cancel-btn:hover {
   opacity: 0.8;
 }
+
+/* Review view */
+.bg-plugin-review-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  background: transparent;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.bg-plugin-review-checkbox:checked {
+  background: var(--checkbox-accent, var(--accent, #6C5CE7));
+  border-color: var(--checkbox-accent, var(--accent, #6C5CE7));
+}
+
+.bg-plugin-review-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.bg-plugin-review-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.bg-plugin-review-select-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: inherit;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: opacity 0.12s;
+}
+
+.bg-plugin-review-select-toggle:hover {
+  opacity: 0.8;
+}
+
+.bg-plugin-review-apply-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: filter 0.12s, opacity 0.12s;
+  width: 100%;
+}
+
+.bg-plugin-review-apply-btn:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+
+.bg-plugin-review-apply-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bg-plugin-review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.bg-plugin-review-empty {
+  text-align: center;
+  padding: 32px 0;
+  font-size: 12px;
+  opacity: 0.5;
+}
 `;
