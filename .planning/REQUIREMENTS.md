@@ -11,7 +11,7 @@
 - [x] **FETCH-02**: Plugin fetches page HTML and all linked CSS via curl through shell.exec()
 - [x] **FETCH-03**: Plugin detects bot-protected pages (Cloudflare/Akamai challenges) and shows a clear error message
 - [x] **FETCH-04**: Plugin validates URLs to prevent SSRF (rejects private IPs, localhost, non-http schemes)
-- [ ] **FETCH-05**: Plugin shows loading state with progress indication during multi-step extraction
+- [x] **FETCH-05**: Plugin shows loading state with progress indication during multi-step extraction
 
 ### Color Extraction
 
@@ -94,7 +94,7 @@
 | FETCH-02 | Phase 1 | Complete |
 | FETCH-03 | Phase 1 | Complete |
 | FETCH-04 | Phase 1 | Complete |
-| FETCH-05 | Phase 1 | Pending |
+| FETCH-05 | Phase 1 | Complete |
 | COLR-01 | Phase 2 | Pending |
 | COLR-02 | Phase 2 | Pending |
 | COLR-03 | Phase 2 | Pending |
