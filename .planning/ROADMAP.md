@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: URL Fetching and Security** - Reliable URL input, HTML/CSS fetching via curl, SSRF prevention, and bot detection
 - [ ] **Phase 2: Token Extraction and AI Analysis** - CSS parsing, Claude CLI integration, semantic color naming, font role classification, and voice/tone inference
-- [ ] **Phase 3: Review UI and Entry Points** - Extraction preview with selective token acceptance, settings merge, and discoverable entry points
+- [x] **Phase 3: Review UI and Entry Points** - Extraction preview with selective token acceptance, settings merge, and discoverable entry points (completed 2026-03-08)
 - [ ] **Phase 4: Border Radius and Spacing** - Schema extension for radii and spacing tokens with extraction and AI analysis
 
 ## Phase Details
@@ -62,7 +62,7 @@ Plans:
   3. Accepted tokens merge with existing brand settings (no data is overwritten or lost)
   4. User can re-extract from a different URL to refine results without losing previously accepted tokens
   5. "Start from URL" is visible as a prominent CTA when brand settings are empty and always accessible via a button in the modal toolbar
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 03-01-PLAN.md — Pure merge logic with TDD tests, ReviewView component with tabbed layout, CSS styles
@@ -90,5 +90,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. URL Fetching and Security | 3/3 | Complete | 2026-03-08 |
 | 2. Token Extraction and AI Analysis | 2/2 | Complete | 2026-03-08 |
-| 3. Review UI and Entry Points | 0/2 | Not started | - |
+| 3. Review UI and Entry Points | 2/2 | Complete   | 2026-03-08 |
 | 4. Border Radius and Spacing | 0/0 | Not started | - |

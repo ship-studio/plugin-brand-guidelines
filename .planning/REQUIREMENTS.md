@@ -44,12 +44,12 @@
 - [x] **REVW-01**: Plugin shows a preview of all extracted tokens (colors, fonts, voice, radii, spacing) before saving
 - [x] **REVW-02**: User can selectively accept or reject individual extracted tokens
 - [x] **REVW-03**: Plugin merges accepted tokens with existing brand settings (not replace)
-- [ ] **REVW-04**: User can re-extract from a different URL to refine results
+- [x] **REVW-04**: User can re-extract from a different URL to refine results
 
 ### Entry Points
 
-- [ ] **ENTR-01**: "Start from URL" appears as a prominent CTA when brand settings are empty (empty state)
-- [ ] **ENTR-02**: "Start from URL" is always accessible via a button in the modal header/toolbar
+- [x] **ENTR-01**: "Start from URL" appears as a prominent CTA when brand settings are empty (empty state)
+- [x] **ENTR-02**: "Start from URL" is always accessible via a button in the modal header/toolbar
 
 ### AI Integration
 
@@ -109,9 +109,9 @@
 | REVW-01 | Phase 3 | Complete |
 | REVW-02 | Phase 3 | Complete |
 | REVW-03 | Phase 3 | Complete |
-| REVW-04 | Phase 3 | Pending |
-| ENTR-01 | Phase 3 | Pending |
-| ENTR-02 | Phase 3 | Pending |
+| REVW-04 | Phase 3 | Complete |
+| ENTR-01 | Phase 3 | Complete |
+| ENTR-02 | Phase 3 | Complete |
 | AINT-01 | Phase 2 | Complete |
 | AINT-02 | Phase 2 | Complete |
 | AINT-03 | Phase 2 | Complete |
