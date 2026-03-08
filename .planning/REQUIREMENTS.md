@@ -90,39 +90,39 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FETCH-01 | — | Pending |
-| FETCH-02 | — | Pending |
-| FETCH-03 | — | Pending |
-| FETCH-04 | — | Pending |
-| FETCH-05 | — | Pending |
-| COLR-01 | — | Pending |
-| COLR-02 | — | Pending |
-| COLR-03 | — | Pending |
-| FONT-01 | — | Pending |
-| FONT-02 | — | Pending |
-| VOIC-01 | — | Pending |
-| VOIC-02 | — | Pending |
-| RADI-01 | — | Pending |
-| RADI-02 | — | Pending |
-| SPAC-01 | — | Pending |
-| SPAC-02 | — | Pending |
-| REVW-01 | — | Pending |
-| REVW-02 | — | Pending |
-| REVW-03 | — | Pending |
-| REVW-04 | — | Pending |
-| ENTR-01 | — | Pending |
-| ENTR-02 | — | Pending |
-| AINT-01 | — | Pending |
-| AINT-02 | — | Pending |
-| AINT-03 | — | Pending |
-| SECR-01 | — | Pending |
-| SECR-02 | — | Pending |
+| FETCH-01 | Phase 1 | Pending |
+| FETCH-02 | Phase 1 | Pending |
+| FETCH-03 | Phase 1 | Pending |
+| FETCH-04 | Phase 1 | Pending |
+| FETCH-05 | Phase 1 | Pending |
+| COLR-01 | Phase 2 | Pending |
+| COLR-02 | Phase 2 | Pending |
+| COLR-03 | Phase 2 | Pending |
+| FONT-01 | Phase 2 | Pending |
+| FONT-02 | Phase 2 | Pending |
+| VOIC-01 | Phase 2 | Pending |
+| VOIC-02 | Phase 2 | Pending |
+| RADI-01 | Phase 4 | Pending |
+| RADI-02 | Phase 4 | Pending |
+| SPAC-01 | Phase 4 | Pending |
+| SPAC-02 | Phase 4 | Pending |
+| REVW-01 | Phase 3 | Pending |
+| REVW-02 | Phase 3 | Pending |
+| REVW-03 | Phase 3 | Pending |
+| REVW-04 | Phase 3 | Pending |
+| ENTR-01 | Phase 3 | Pending |
+| ENTR-02 | Phase 3 | Pending |
+| AINT-01 | Phase 2 | Pending |
+| AINT-02 | Phase 2 | Pending |
+| AINT-03 | Phase 2 | Pending |
+| SECR-01 | Phase 1 | Pending |
+| SECR-02 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27 ⚠️
+- Mapped to phases: 27
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-08*
-*Last updated: 2026-03-08 after initial definition*
+*Last updated: 2026-03-08 after roadmap creation*
