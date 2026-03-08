@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useTheme } from './context';
+import { useTheme, useToast } from './context';
 import { Modal } from './Modal';
 import { ColorsSection } from './ColorsSection';
 import { FontsSection } from './FontsSection';
@@ -8,13 +8,16 @@ import { AssetsSection } from './AssetsSection';
 import { ExportFooter } from './ExportFooter';
 import { UrlInputView } from './UrlInputView';
 import { ExtractionView } from './ExtractionView';
+import { ReviewView } from './ReviewView';
 import { useBrandSettings } from './useBrandSettings';
 import { useFileSync } from './useFileSync';
 import { useUrlFetch } from './useUrlFetch';
+import { mergeTokens } from './reviewMerge';
 import { hasBrandData } from './markdown';
+import type { BrandColor, BrandFont } from './types';
 
 type Tab = 'colors' | 'fonts' | 'voice' | 'assets';
-type ModalView = 'url-cta' | 'tabs' | 'url-inline' | 'extracting';
+type ModalView = 'url-cta' | 'tabs' | 'url-inline' | 'extracting' | 'review';
 
 const TABS: { key: Tab; label: string }[] = [
   { key: 'colors', label: 'Colors' },
@@ -34,6 +37,7 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   );
   const { state: fetchState, startExtraction, cancel, reset, result } = useUrlFetch();
 
+  const showToast = useToast();
   const hasData = loaded && hasBrandData(settings);
   const [view, setView] = useState<ModalView>('tabs');
   const [lastUrl, setLastUrl] = useState('');
@@ -53,8 +57,7 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   // Watch fetch state for completion
   useEffect(() => {
     if (fetchState.status === 'done') {
-      // result.analysis contains AI-analyzed colors/fonts/voiceNotes (Phase 3 will add review flow)
-      setView('tabs');
+      setView('review');
     }
     // error state: stay on extracting view (ExtractionView handles error display)
   }, [fetchState.status]);
@@ -75,9 +78,38 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
     }
   };
 
+  const handleApply = (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null) => {
+    updateSettings(prev => mergeTokens(prev, { colors, fonts, voiceNotes }));
+
+    const parts: string[] = [];
+    if (colors.length) parts.push(`${colors.length} colors`);
+    if (fonts.length) parts.push(`${fonts.length} fonts`);
+    if (voiceNotes) parts.push('voice notes');
+    showToast(`Applied ${parts.join(', ')}`, 'success');
+
+    reset();
+    setView('tabs');
+  };
+
+  const handleTryAnother = () => {
+    if (window.confirm('Discard extracted tokens? AI extraction takes 60+ seconds.')) {
+      reset();
+      setView(hasData ? 'url-inline' : 'url-cta');
+    }
+  };
+
+  const handleDiscardReview = () => {
+    if (window.confirm('Discard extracted tokens? AI extraction takes 60+ seconds.')) {
+      reset();
+      onClose();
+    }
+  };
+
+  const handleClose = view === 'review' ? handleDiscardReview : onClose;
+
   if (!loaded) {
     return (
-      <Modal onClose={onClose} title="Brand Guidelines">
+      <Modal onClose={handleClose} title="Brand Guidelines">
         <div className="bg-plugin-modal-body">
           <div className="bg-plugin-empty">Loading...</div>
         </div>
@@ -88,7 +120,7 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   // URL CTA view (empty state)
   if (view === 'url-cta') {
     return (
-      <Modal onClose={onClose} title="Brand Guidelines">
+      <Modal onClose={handleClose} title="Brand Guidelines">
         <div className="bg-plugin-url-cta">
           <div className="bg-plugin-url-cta-headline" style={{ color: theme.textPrimary }}>
             Start from a URL
@@ -113,10 +145,24 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   // Extracting view
   if (view === 'extracting') {
     return (
-      <Modal onClose={onClose} title="Brand Guidelines">
+      <Modal onClose={handleClose} title="Brand Guidelines">
         <div className="bg-plugin-extraction">
           <ExtractionView state={fetchState} onCancel={handleCancel} />
         </div>
+      </Modal>
+    );
+  }
+
+  // Review view (after extraction completes)
+  if (view === 'review' && result?.analysis) {
+    return (
+      <Modal onClose={handleClose} title="Brand Guidelines">
+        <ReviewView
+          analysis={result.analysis}
+          onApply={handleApply}
+          onTryAnother={handleTryAnother}
+          onDiscard={handleDiscardReview}
+        />
       </Modal>
     );
   }
@@ -148,7 +194,7 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
 
   return (
     <Modal
-      onClose={onClose}
+      onClose={handleClose}
       title="Brand Guidelines"
       footer={footer}
       headerActions={headerUrlButton}
