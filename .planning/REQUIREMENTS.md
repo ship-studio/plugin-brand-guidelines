@@ -17,17 +17,17 @@
 
 - [x] **COLR-01**: Plugin extracts raw color values from fetched CSS (hex, rgb, hsl, named colors)
 - [x] **COLR-02**: Plugin deduplicates and normalizes colors to 5-12 meaningful values
-- [ ] **COLR-03**: AI assigns semantic names to extracted colors (Primary, Accent, Background, etc.)
+- [x] **COLR-03**: AI assigns semantic names to extracted colors (Primary, Accent, Background, etc.)
 
 ### Font Extraction
 
 - [x] **FONT-01**: Plugin extracts font-family declarations from fetched CSS
-- [ ] **FONT-02**: AI classifies extracted fonts into heading/body roles
+- [x] **FONT-02**: AI classifies extracted fonts into heading/body roles
 
 ### Voice & Tone
 
 - [x] **VOIC-01**: Plugin extracts visible text content from page HTML
-- [ ] **VOIC-02**: AI analyzes page copy and generates voice/tone notes
+- [x] **VOIC-02**: AI analyzes page copy and generates voice/tone notes
 
 ### Border Radius Extraction
 
@@ -53,9 +53,9 @@
 
 ### AI Integration
 
-- [ ] **AINT-01**: All AI analysis runs via Claude Code CLI (`claude -p`) through shell.exec() — no API keys required
-- [ ] **AINT-02**: CSS input to Claude is truncated to ~100KB to prevent buffer overflow
-- [ ] **AINT-03**: All shell.exec() calls have explicit timeouts (60s+ for AI analysis)
+- [x] **AINT-01**: All AI analysis runs via Claude Code CLI (`claude -p`) through shell.exec() — no API keys required
+- [x] **AINT-02**: CSS input to Claude is truncated to ~100KB to prevent buffer overflow
+- [x] **AINT-03**: All shell.exec() calls have explicit timeouts (60s+ for AI analysis)
 
 ### Security
 
@@ -97,11 +97,11 @@
 | FETCH-05 | Phase 1 | Complete |
 | COLR-01 | Phase 2 | Complete |
 | COLR-02 | Phase 2 | Complete |
-| COLR-03 | Phase 2 | Pending |
+| COLR-03 | Phase 2 | Complete |
 | FONT-01 | Phase 2 | Complete |
-| FONT-02 | Phase 2 | Pending |
+| FONT-02 | Phase 2 | Complete |
 | VOIC-01 | Phase 2 | Complete |
-| VOIC-02 | Phase 2 | Pending |
+| VOIC-02 | Phase 2 | Complete |
 | RADI-01 | Phase 4 | Pending |
 | RADI-02 | Phase 4 | Pending |
 | SPAC-01 | Phase 4 | Pending |
@@ -112,9 +112,9 @@
 | REVW-04 | Phase 3 | Pending |
 | ENTR-01 | Phase 3 | Pending |
 | ENTR-02 | Phase 3 | Pending |
-| AINT-01 | Phase 2 | Pending |
-| AINT-02 | Phase 2 | Pending |
-| AINT-03 | Phase 2 | Pending |
+| AINT-01 | Phase 2 | Complete |
+| AINT-02 | Phase 2 | Complete |
+| AINT-03 | Phase 2 | Complete |
 | SECR-01 | Phase 1 | Complete |
 | SECR-02 | Phase 1 | Complete |
 
