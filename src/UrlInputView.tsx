@@ -78,27 +78,18 @@ export function UrlInputView({ onExtract, initialUrl }: UrlInputViewProps) {
             width: '100%',
           }}
         />
-        {hasTyped && error && (
-          <span
-            style={{
-              color: theme.error,
-              fontSize: '11px',
-              lineHeight: '1.4',
-              paddingLeft: '2px',
-            }}
-          >
-            {error}
-          </span>
-        )}
+        <div className="bg-plugin-url-hint" style={{ color: hasTyped && error ? theme.error : 'transparent' }}>
+          {hasTyped && error ? error : '\u00A0'}
+        </div>
       </div>
       <button
-        className="bg-plugin-export-btn"
+        className="bg-plugin-extract-btn"
         onClick={handleSubmit}
         disabled={isDisabled}
         style={{
           backgroundColor: theme.action,
           color: theme.actionText,
-          cursor: isDisabled ? 'not-allowed' : 'pointer',
+          width: '100%',
         }}
       >
         Extract Brand

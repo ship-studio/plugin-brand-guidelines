@@ -326,4 +326,210 @@ export const BRAND_GUIDELINES_CSS = `
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* URL CTA empty state */
+.bg-plugin-url-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  gap: 16px;
+}
+
+.bg-plugin-url-cta-headline {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.bg-plugin-url-cta-subtext {
+  font-size: 12px;
+  opacity: 0.6;
+  max-width: 300px;
+}
+
+.bg-plugin-url-cta-manual {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  text-decoration: underline;
+  opacity: 0.5;
+  color: inherit;
+  margin-top: 8px;
+}
+
+.bg-plugin-url-cta-manual:hover {
+  opacity: 0.8;
+}
+
+/* Inline URL bar (below header, above tabs) */
+.bg-plugin-url-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+/* Header action button (globe icon) */
+.bg-plugin-header-action {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px 6px;
+  opacity: 0.4;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.bg-plugin-header-action:hover {
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Extraction progress */
+.bg-plugin-extraction {
+  padding: 24px 16px;
+}
+
+.bg-plugin-extraction-domain {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-bottom: 20px;
+}
+
+.bg-plugin-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.bg-plugin-step-icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+.bg-plugin-step-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.bg-plugin-step-label {
+  font-size: 13px;
+}
+
+.bg-plugin-step-detail {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+/* Pulsing dot for active step */
+@keyframes bgPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.bg-plugin-pulse {
+  animation: bgPulse 1.5s ease-in-out infinite;
+}
+
+/* Error block */
+.bg-plugin-error-block {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid;
+}
+
+.bg-plugin-error-headline {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.bg-plugin-error-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: inherit;
+  color: inherit;
+  opacity: 0.5;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.bg-plugin-error-detail {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: pre-wrap;
+}
+
+/* URL input specific */
+.bg-plugin-url-input-wrapper {
+  width: 100%;
+  max-width: 360px;
+}
+
+.bg-plugin-url-hint {
+  font-size: 11px;
+  margin-top: 4px;
+  min-height: 16px;
+}
+
+.bg-plugin-extract-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: filter 0.12s, opacity 0.12s;
+  margin-top: 4px;
+}
+
+.bg-plugin-extract-btn:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+
+.bg-plugin-extract-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.bg-plugin-cancel-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  color: inherit;
+  opacity: 0.5;
+  padding: 6px 12px;
+  margin-top: 16px;
+}
+
+.bg-plugin-cancel-btn:hover {
+  opacity: 0.8;
+}
 `;

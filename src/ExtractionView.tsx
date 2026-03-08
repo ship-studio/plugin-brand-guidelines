@@ -14,39 +14,33 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       {/* Header */}
-      <div style={{ color: theme.textSecondary, fontSize: '12px' }}>
+      <div className="bg-plugin-extraction-domain">
         Extracting from {state.domain}
       </div>
 
       {/* Steps */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {state.steps.map((step) => (
-          <div key={step.id} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {/* Status indicator */}
+          <div key={step.id} className="bg-plugin-step">
+            {/* Status indicator */}
+            <span className="bg-plugin-step-icon">
               {step.status === 'done' && (
-                <span style={{ color: theme.success, fontSize: '14px', width: '18px', textAlign: 'center' }}>
-                  &#10003;
-                </span>
+                <span style={{ color: theme.success }}>&#10003;</span>
               )}
               {step.status === 'active' && (
                 <span
+                  className="bg-plugin-pulse"
                   style={{
                     display: 'inline-block',
                     width: '8px',
                     height: '8px',
                     borderRadius: '50%',
                     backgroundColor: theme.accent,
-                    marginLeft: '5px',
-                    marginRight: '5px',
-                    animation: 'bgPulse 1.2s ease-in-out infinite',
                   }}
                 />
               )}
               {step.status === 'error' && (
-                <span style={{ color: theme.error, fontSize: '14px', width: '18px', textAlign: 'center' }}>
-                  &#10007;
-                </span>
+                <span style={{ color: theme.error }}>&#10007;</span>
               )}
               {step.status === 'pending' && (
                 <span
@@ -56,42 +50,32 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
                     height: '8px',
                     borderRadius: '50%',
                     backgroundColor: theme.textMuted,
-                    marginLeft: '5px',
-                    marginRight: '5px',
                   }}
                 />
               )}
+            </span>
 
-              {/* Label */}
-              <span
+            {/* Content */}
+            <div className="bg-plugin-step-content">
+              <div
+                className="bg-plugin-step-label"
                 style={{
-                  fontSize: '13px',
                   color:
                     step.status === 'error'
                       ? theme.error
-                      : step.status === 'active'
-                        ? theme.textPrimary
-                        : step.status === 'done'
-                          ? theme.textPrimary
-                          : theme.textMuted,
+                      : step.status === 'pending'
+                        ? theme.textMuted
+                        : theme.textPrimary,
                 }}
               >
                 {step.label}
-              </span>
+              </div>
+              {step.detail && step.status === 'active' && (
+                <div className="bg-plugin-step-detail">
+                  {step.detail}
+                </div>
+              )}
             </div>
-
-            {/* Detail text for active step */}
-            {step.detail && step.status === 'active' && (
-              <span
-                style={{
-                  fontSize: '11px',
-                  color: theme.textMuted,
-                  paddingLeft: '26px',
-                }}
-              >
-                {step.detail}
-              </span>
-            )}
           </div>
         ))}
       </div>
@@ -99,46 +83,22 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
       {/* Error block */}
       {state.error && (
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            padding: '12px',
-            borderRadius: '8px',
-            backgroundColor: theme.bgTertiary,
-          }}
+          className="bg-plugin-error-block"
+          style={{ backgroundColor: theme.bgTertiary, borderColor: theme.border }}
         >
-          <div style={{ color: theme.error, fontSize: '13px', fontWeight: 500 }}>
+          <div className="bg-plugin-error-headline" style={{ color: theme.error }}>
             {state.error.headline}
           </div>
 
           <button
+            className="bg-plugin-error-toggle"
             onClick={() => setDetailsExpanded(!detailsExpanded)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: theme.textMuted,
-              fontSize: '11px',
-              cursor: 'pointer',
-              padding: 0,
-              textAlign: 'left',
-              textDecoration: 'underline',
-            }}
           >
             {detailsExpanded ? 'Hide details' : 'Show details'}
           </button>
 
           {detailsExpanded && (
-            <div
-              style={{
-                fontSize: '11px',
-                color: theme.textMuted,
-                lineHeight: '1.5',
-                fontFamily: 'monospace',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-              }}
-            >
+            <div className="bg-plugin-error-detail">
               {state.error.detail}
             </div>
           )}
@@ -149,7 +109,7 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
             style={{
               backgroundColor: theme.action,
               color: theme.actionText,
-              marginTop: '4px',
+              marginTop: '8px',
             }}
           >
             Try Again
@@ -157,31 +117,15 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
         </div>
       )}
 
-      {/* Cancel button (only when not in error state -- error has its own Try Again) */}
+      {/* Cancel button (only when not in error state) */}
       {!state.error && (
         <button
+          className="bg-plugin-cancel-btn"
           onClick={onCancel}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: theme.textMuted,
-            fontSize: '12px',
-            cursor: 'pointer',
-            padding: '4px 0',
-            textAlign: 'center',
-          }}
         >
           Cancel
         </button>
       )}
-
-      {/* Pulse animation style */}
-      <style>{`
-        @keyframes bgPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-      `}</style>
     </div>
   );
 }

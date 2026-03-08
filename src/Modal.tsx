@@ -6,11 +6,13 @@ export function Modal({
   title,
   children,
   footer,
+  headerActions,
 }: {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  headerActions?: React.ReactNode;
 }) {
   const theme = useTheme();
 
@@ -45,13 +47,16 @@ export function Modal({
             </svg>
             {title}
           </span>
-          <button
+          <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {headerActions}
+            <button
             className="bg-plugin-close-btn"
             onClick={onClose}
             style={{ color: theme.textMuted }}
           >
             ✕
           </button>
+          </span>
         </div>
         {children}
         {footer}
