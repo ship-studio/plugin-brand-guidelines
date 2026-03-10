@@ -68,6 +68,46 @@ describe('prepareTokens', () => {
     expect(result.voiceNotes).toBe('');
   });
 
+  it('includes usageSummaries when present in AnalysisResult', () => {
+    const analysis: AnalysisResult = {
+      colors: [],
+      fonts: [],
+      voiceNotes: '',
+      radii: [],
+      spacing: [],
+      usageSummaries: {
+        colors: 'Use Primary for CTAs.',
+        fonts: 'Use Inter for headings.',
+        radii: 'Use 8px for cards.',
+        spacing: 'Use 16px as base unit.',
+      },
+    };
+    const result = prepareTokens(analysis);
+    expect(result.usageSummaries).toEqual({
+      colors: 'Use Primary for CTAs.',
+      fonts: 'Use Inter for headings.',
+      radii: 'Use 8px for cards.',
+      spacing: 'Use 16px as base unit.',
+    });
+  });
+
+  it('defaults to empty strings when usageSummaries missing from AnalysisResult', () => {
+    const analysis = {
+      colors: [],
+      fonts: [],
+      voiceNotes: '',
+      radii: [],
+      spacing: [],
+    } as unknown as AnalysisResult;
+    const result = prepareTokens(analysis);
+    expect(result.usageSummaries).toEqual({
+      colors: '',
+      fonts: '',
+      radii: '',
+      spacing: '',
+    });
+  });
+
   it('generates unique IDs for each token', () => {
     const analysis: AnalysisResult = {
       colors: [

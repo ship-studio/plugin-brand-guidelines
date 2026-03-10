@@ -5,7 +5,7 @@
  * mergeTokens appends accepted tokens into existing BrandSettings.
  */
 
-import type { AnalysisResult } from './analyzeTokens';
+import type { AnalysisResult, UsageSummaries } from './analyzeTokens';
 import type { BrandColor, BrandFont, BrandRadius, BrandSpacing, BrandSettings } from './types';
 
 // ── prepareTokens ──────────────────────────────────────────────────────────
@@ -20,6 +20,7 @@ export function prepareTokens(analysis: AnalysisResult): {
   voiceNotes: string;
   radii: BrandRadius[];
   spacing: BrandSpacing[];
+  usageSummaries: UsageSummaries;
 } {
   const colors: BrandColor[] = analysis.colors.map((c) => ({
     id: crypto.randomUUID(),
@@ -45,7 +46,10 @@ export function prepareTokens(analysis: AnalysisResult): {
     value: s.value,
   }));
 
-  return { colors, fonts, voiceNotes: analysis.voiceNotes, radii, spacing };
+  const defaultSummaries: UsageSummaries = { colors: '', fonts: '', radii: '', spacing: '' };
+  const usageSummaries: UsageSummaries = { ...defaultSummaries, ...(analysis.usageSummaries || {}) };
+
+  return { colors, fonts, voiceNotes: analysis.voiceNotes, radii, spacing, usageSummaries };
 }
 
 // ── mergeTokens ─────────────────────────────────────────────────────────────
