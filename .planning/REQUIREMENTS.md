@@ -14,7 +14,7 @@ Requirements for Usage Guide milestone. Each maps to roadmap phases.
 
 ### Review UI
 
-- [ ] **RV-01**: Each review tab displays an editable usage summary at the top showing the AI's guidance for that category
+- [x] **RV-01**: Each review tab displays an editable usage summary at the top showing the AI's guidance for that category
 - [ ] **RV-02**: Usage summaries update when user deselects tokens, removing references to rejected tokens
 
 ### Export
@@ -45,7 +45,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | AI-01 | Phase 5 | Complete |
 | AI-02 | Phase 5 | Complete |
-| RV-01 | Phase 6 | Pending |
+| RV-01 | Phase 6 | Complete |
 | RV-02 | Phase 6 | Pending |
 | EX-01 | Phase 7 | Pending |
 | EX-02 | Phase 7 | Pending |
