@@ -9,8 +9,8 @@ Requirements for Usage Guide milestone. Each maps to roadmap phases.
 
 ### AI Analysis
 
-- [ ] **AI-01**: AI generates a usage summary paragraph per token category (colors, fonts, radii, spacing, voice) during extraction
-- [ ] **AI-02**: Usage summaries reference specific tokens by name and value (e.g., "Primary #5C4EFA is used for CTAs and links")
+- [x] **AI-01**: AI generates a usage summary paragraph per token category (colors, fonts, radii, spacing, voice) during extraction
+- [x] **AI-02**: Usage summaries reference specific tokens by name and value (e.g., "Primary #5C4EFA is used for CTAs and links")
 
 ### Review UI
 
@@ -43,8 +43,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AI-01 | Phase 5 | Pending |
-| AI-02 | Phase 5 | Pending |
+| AI-01 | Phase 5 | Complete |
+| AI-02 | Phase 5 | Complete |
 | RV-01 | Phase 6 | Pending |
 | RV-02 | Phase 6 | Pending |
 | EX-01 | Phase 7 | Pending |
@@ -57,4 +57,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-08*
-*Last updated: 2026-03-08 after roadmap creation*
+*Last updated: 2026-03-10 after plan 05-01 completion*
