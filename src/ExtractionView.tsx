@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from './context';
 import type { ExtractionState } from './useUrlFetch';
 
@@ -7,9 +7,44 @@ interface ExtractionViewProps {
   onCancel: () => void;
 }
 
+const ANALYZE_HINTS = [
+  'Reading design tokens...',
+  'Identifying brand colors...',
+  'Classifying fonts...',
+  'Analyzing voice & tone...',
+  'Generating usage guidance...',
+  'Almost there...',
+];
+
 export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
   const theme = useTheme();
   const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const [hintIndex, setHintIndex] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval>>();
+
+  const analyzeStep = state.steps.find((s) => s.id === 'analyze');
+  const isAnalyzing = analyzeStep?.status === 'active';
+
+  // Elapsed timer while analyzing
+  useEffect(() => {
+    if (isAnalyzing) {
+      setElapsed(0);
+      setHintIndex(0);
+      timerRef.current = setInterval(() => {
+        setElapsed((prev) => prev + 1);
+      }, 1000);
+      return () => clearInterval(timerRef.current);
+    }
+    clearInterval(timerRef.current);
+  }, [isAnalyzing]);
+
+  // Cycle through hints every 8 seconds
+  useEffect(() => {
+    if (isAnalyzing && elapsed > 0 && elapsed % 8 === 0) {
+      setHintIndex((prev) => Math.min(prev + 1, ANALYZE_HINTS.length - 1));
+    }
+  }, [isAnalyzing, elapsed]);
 
   const doneCount = state.steps.filter((s) => s.status === 'done').length;
   const total = state.steps.length;
@@ -79,6 +114,16 @@ export function ExtractionView({ state, onCancel }: ExtractionViewProps) {
               {step.detail && step.status === 'active' && (
                 <div className="bg-plugin-step-detail" style={{ color: theme.textMuted }}>
                   {step.detail}
+                </div>
+              )}
+              {step.id === 'analyze' && step.status === 'active' && (
+                <div className="bg-plugin-step-detail" style={{ color: theme.textMuted }}>
+                  {ANALYZE_HINTS[hintIndex]}
+                  {elapsed > 3 && (
+                    <span style={{ marginLeft: 6, opacity: 0.5 }}>
+                      {elapsed}s
+                    </span>
+                  )}
                 </div>
               )}
             </div>
