@@ -61,10 +61,10 @@ Plans:
   1. Exported markdown contains a "Usage Guide" section with per-category subsections
   2. The Usage Guide only references tokens the user accepted (rejected tokens do not appear)
   3. If no usage summaries exist (manual-only workflow without extraction), export still works without a Usage Guide section
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 07-01: TBD
+- [ ] 07-01-PLAN.md — TDD generateBrandMarkdown Usage Guide section and integration tests
 
 ## Progress
 
@@ -78,4 +78,4 @@ Plans:
 | 4. Border Radius and Spacing | v1.0 | 2/2 | Complete | 2026-03-08 |
 | 5. Usage Summary Generation | v1.1 | 1/2 | In progress | - |
 | 6. Review UI for Usage Summaries | v1.1 | 0/2 | Not started | - |
-| 7. Export with Usage Guide | v1.1 | 0/? | Not started | - |
+| 7. Export with Usage Guide | v1.1 | 0/1 | Not started | - |
