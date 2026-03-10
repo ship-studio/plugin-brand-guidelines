@@ -13,6 +13,7 @@ describe('prepareTokens', () => {
       voiceNotes: '',
       radii: [],
       spacing: [],
+      usageSummaries: { colors: '', fonts: '', radii: '', spacing: '' },
     };
     const result = prepareTokens(analysis);
     expect(result.colors).toHaveLength(1);
@@ -29,6 +30,7 @@ describe('prepareTokens', () => {
       voiceNotes: '',
       radii: [],
       spacing: [],
+      usageSummaries: { colors: '', fonts: '', radii: '', spacing: '' },
     };
     const result = prepareTokens(analysis);
     expect(result.fonts).toHaveLength(1);
@@ -45,6 +47,7 @@ describe('prepareTokens', () => {
       voiceNotes: 'Professional but friendly.',
       radii: [],
       spacing: [],
+      usageSummaries: { colors: '', fonts: '', radii: '', spacing: '' },
     };
     const result = prepareTokens(analysis);
     expect(result.voiceNotes).toBe('Professional but friendly.');
@@ -57,6 +60,7 @@ describe('prepareTokens', () => {
       voiceNotes: '',
       radii: [],
       spacing: [],
+      usageSummaries: { colors: '', fonts: '', radii: '', spacing: '' },
     };
     const result = prepareTokens(analysis);
     expect(result.colors).toEqual([]);
@@ -77,6 +81,7 @@ describe('prepareTokens', () => {
       voiceNotes: '',
       radii: [],
       spacing: [],
+      usageSummaries: { colors: '', fonts: '', radii: '', spacing: '' },
     };
     const result = prepareTokens(analysis);
     const ids =[...result.colors.map((c) => c.id), ...result.fonts.map((f) => f.id)];
