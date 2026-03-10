@@ -1,14 +1,14 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useTheme } from './context';
 import { prepareTokens } from './reviewMerge';
-import type { AnalysisResult } from './analyzeTokens';
+import type { AnalysisResult, UsageSummaries } from './analyzeTokens';
 import type { BrandColor, BrandFont, BrandRadius, BrandSpacing } from './types';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export interface ReviewViewProps {
   analysis: AnalysisResult;
-  onApply: (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null, radii: BrandRadius[], spacing: BrandSpacing[]) => void;
+  onApply: (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null, radii: BrandRadius[], spacing: BrandSpacing[], usageSummaries: UsageSummaries) => void;
   onTryAnother: () => void;
   onDiscard: () => void;
 }
@@ -22,6 +22,47 @@ const TABS: { key: ReviewTab; label: string }[] = [
   { key: 'radii', label: 'Radii' },
   { key: 'spacing', label: 'Spacing' },
 ];
+
+// ── Checkbox (div-based, immune to host app styles) ─────────────────────
+
+function Checkbox({ checked, onChange, accent, style }: {
+  checked: boolean;
+  onChange: () => void;
+  accent: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <div
+      role="checkbox"
+      aria-checked={checked}
+      tabIndex={0}
+      onClick={onChange}
+      onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); onChange(); } }}
+      style={{
+        width: 16,
+        height: 16,
+        minWidth: 16,
+        minHeight: 16,
+        borderRadius: 4,
+        border: checked ? `1.5px solid ${accent}` : '1.5px solid rgba(255, 255, 255, 0.3)',
+        background: checked ? accent : 'transparent',
+        cursor: 'pointer',
+        flexShrink: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'background 0.12s, border-color 0.12s',
+        ...style,
+      }}
+    >
+      {checked && (
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M2 5.2L4.2 7.4L8.2 2.8" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+    </div>
+  );
+}
 
 // ── Component ──────────────────────────────────────────────────────────────
 
@@ -38,6 +79,11 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
   const [voiceNotes, setVoiceNotes] = useState(initial.voiceNotes);
   const [radii, setRadii] = useState<BrandRadius[]>(initial.radii);
   const [spacing, setSpacing] = useState<BrandSpacing[]>(initial.spacing);
+  const [usageSummaries, setUsageSummaries] = useState<UsageSummaries>(initial.usageSummaries);
+
+  const updateSummary = useCallback((key: keyof UsageSummaries, value: string) => {
+    setUsageSummaries(prev => ({ ...prev, [key]: value }));
+  }, []);
 
   // Selection maps keyed by token ID (or 'voice' for voice notes)
   const [selected, setSelected] = useState<Record<string, boolean>>(() => {
@@ -104,11 +150,11 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
     const acceptedVoice = voiceSelected ? voiceNotes : null;
     const acceptedRadii = radii.filter((r) => selected[r.id]);
     const acceptedSpacing = spacing.filter((s) => selected[s.id]);
-    onApply(acceptedColors, acceptedFonts, acceptedVoice, acceptedRadii, acceptedSpacing);
+    onApply(acceptedColors, acceptedFonts, acceptedVoice, acceptedRadii, acceptedSpacing, usageSummaries);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
       {/* Header */}
       <div className="bg-plugin-review-header" style={{ borderBottomColor: theme.border }}>
         <span style={{ fontSize: 12, fontWeight: 500, color: theme.textSecondary }}>
@@ -176,6 +222,17 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
               </div>
             ) : (
               <>
+                {usageSummaries.colors && (
+                  <div className="bg-plugin-usage-summary">
+                    <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
+                    <textarea
+                      className="bg-plugin-usage-summary-textarea"
+                      value={usageSummaries.colors}
+                      onChange={(e) => updateSummary('colors', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                    />
+                  </div>
+                )}
                 <div className="bg-plugin-review-section-header">
                   <span style={{ fontSize: 11, fontWeight: 500, color: theme.textSecondary }}>
                     {selectedColorIds.length} of {colors.length} selected
@@ -190,12 +247,10 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                 </div>
                 {colors.map((color) => (
                   <div key={color.id} className="bg-plugin-row">
-                    <input
-                      type="checkbox"
-                      className="bg-plugin-review-checkbox"
+                    <Checkbox
                       checked={!!selected[color.id]}
                       onChange={() => toggle(color.id)}
-                      style={{ '--checkbox-accent': theme.accent } as React.CSSProperties}
+                      accent="rgba(255,255,255,0.35)"
                     />
                     <div className="bg-plugin-swatch-wrapper">
                       <div
@@ -237,6 +292,17 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
               </div>
             ) : (
               <>
+                {usageSummaries.fonts && (
+                  <div className="bg-plugin-usage-summary">
+                    <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
+                    <textarea
+                      className="bg-plugin-usage-summary-textarea"
+                      value={usageSummaries.fonts}
+                      onChange={(e) => updateSummary('fonts', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                    />
+                  </div>
+                )}
                 <div className="bg-plugin-review-section-header">
                   <span style={{ fontSize: 11, fontWeight: 500, color: theme.textSecondary }}>
                     {selectedFontIds.length} of {fonts.length} selected
@@ -251,12 +317,10 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                 </div>
                 {fonts.map((font) => (
                   <div key={font.id} className="bg-plugin-row">
-                    <input
-                      type="checkbox"
-                      className="bg-plugin-review-checkbox"
+                    <Checkbox
                       checked={!!selected[font.id]}
                       onChange={() => toggle(font.id)}
-                      style={{ '--checkbox-accent': theme.accent } as React.CSSProperties}
+                      accent="rgba(255,255,255,0.35)"
                     />
                     <input
                       className="bg-plugin-input"
@@ -301,15 +365,11 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                   </button>
                 </div>
                 <div className="bg-plugin-row" style={{ alignItems: 'flex-start' }}>
-                  <input
-                    type="checkbox"
-                    className="bg-plugin-review-checkbox"
+                  <Checkbox
                     checked={!!selected['voice']}
                     onChange={() => toggle('voice')}
-                    style={{
-                      '--checkbox-accent': theme.accent,
-                      marginTop: 10,
-                    } as React.CSSProperties}
+                    accent="rgba(255,255,255,0.35)"
+                    style={{ marginTop: 10 }}
                   />
                   <textarea
                     className="bg-plugin-textarea"
@@ -332,6 +392,17 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
               </div>
             ) : (
               <>
+                {usageSummaries.radii && (
+                  <div className="bg-plugin-usage-summary">
+                    <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
+                    <textarea
+                      className="bg-plugin-usage-summary-textarea"
+                      value={usageSummaries.radii}
+                      onChange={(e) => updateSummary('radii', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                    />
+                  </div>
+                )}
                 <div className="bg-plugin-review-section-header">
                   <span style={{ fontSize: 11, fontWeight: 500, color: theme.textSecondary }}>
                     {selectedRadiiIds.length} of {radii.length} selected
@@ -346,12 +417,10 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                 </div>
                 {radii.map((radius) => (
                   <div key={radius.id} className="bg-plugin-row">
-                    <input
-                      type="checkbox"
-                      className="bg-plugin-review-checkbox"
+                    <Checkbox
                       checked={!!selected[radius.id]}
                       onChange={() => toggle(radius.id)}
-                      style={{ '--checkbox-accent': theme.accent } as React.CSSProperties}
+                      accent="rgba(255,255,255,0.35)"
                     />
                     <input
                       className="bg-plugin-input bg-plugin-input--name"
@@ -383,6 +452,17 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
               </div>
             ) : (
               <>
+                {usageSummaries.spacing && (
+                  <div className="bg-plugin-usage-summary">
+                    <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
+                    <textarea
+                      className="bg-plugin-usage-summary-textarea"
+                      value={usageSummaries.spacing}
+                      onChange={(e) => updateSummary('spacing', e.target.value)}
+                      style={{ borderColor: theme.border }}
+                    />
+                  </div>
+                )}
                 <div className="bg-plugin-review-section-header">
                   <span style={{ fontSize: 11, fontWeight: 500, color: theme.textSecondary }}>
                     {selectedSpacingIds.length} of {spacing.length} selected
@@ -397,12 +477,10 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                 </div>
                 {spacing.map((item) => (
                   <div key={item.id} className="bg-plugin-row">
-                    <input
-                      type="checkbox"
-                      className="bg-plugin-review-checkbox"
+                    <Checkbox
                       checked={!!selected[item.id]}
                       onChange={() => toggle(item.id)}
-                      style={{ '--checkbox-accent': theme.accent } as React.CSSProperties}
+                      accent="rgba(255,255,255,0.35)"
                     />
                     <input
                       className="bg-plugin-input bg-plugin-input--name"

@@ -16,6 +16,7 @@ import { useFileSync } from './useFileSync';
 import { useUrlFetch } from './useUrlFetch';
 import { mergeTokens } from './reviewMerge';
 import { hasBrandData } from './markdown';
+import type { UsageSummaries } from './analyzeTokens';
 import type { BrandColor, BrandFont, BrandRadius, BrandSpacing } from './types';
 
 type Tab = 'colors' | 'fonts' | 'voice' | 'assets' | 'radii' | 'spacing';
@@ -45,6 +46,7 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   const hasData = loaded && hasBrandData(settings);
   const [view, setView] = useState<ModalView>('tabs');
   const [lastUrl, setLastUrl] = useState('');
+  const [confirmAction, setConfirmAction] = useState<'try-another' | 'discard' | null>(null);
 
   // Set initial view once settings are loaded
   useEffect(() => {
@@ -82,8 +84,8 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
     }
   };
 
-  const handleApply = (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null, radii: BrandRadius[], spacing: BrandSpacing[]) => {
-    updateSettings(prev => mergeTokens(prev, { colors, fonts, voiceNotes, radii, spacing }));
+  const handleApply = (colors: BrandColor[], fonts: BrandFont[], voiceNotes: string | null, radii: BrandRadius[], spacing: BrandSpacing[], usageSummaries: UsageSummaries) => {
+    updateSettings(prev => mergeTokens(prev, { colors, fonts, voiceNotes, radii, spacing, usageSummaries }));
 
     const parts: string[] = [];
     if (colors.length) parts.push(`${colors.length} colors`);
@@ -97,18 +99,18 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
     setView('tabs');
   };
 
-  const handleTryAnother = () => {
-    if (window.confirm('Discard extracted tokens? AI extraction takes 60+ seconds.')) {
+  const handleTryAnother = () => setConfirmAction('try-another');
+  const handleDiscardReview = () => setConfirmAction('discard');
+
+  const confirmDiscard = () => {
+    if (confirmAction === 'try-another') {
       reset();
       setView(hasData ? 'url-inline' : 'url-cta');
-    }
-  };
-
-  const handleDiscardReview = () => {
-    if (window.confirm('Discard extracted tokens? AI extraction takes 60+ seconds.')) {
+    } else {
       reset();
       onClose();
     }
+    setConfirmAction(null);
   };
 
   const handleClose = view === 'review' ? handleDiscardReview : onClose;
@@ -163,12 +165,39 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
   if (view === 'review' && result?.analysis) {
     return (
       <Modal onClose={handleClose} title="Brand Guidelines">
-        <ReviewView
-          analysis={result.analysis}
-          onApply={handleApply}
-          onTryAnother={handleTryAnother}
-          onDiscard={handleDiscardReview}
-        />
+        {confirmAction ? (
+          <div style={{ padding: 24, textAlign: 'center' }}>
+            <div style={{ fontSize: 13, fontWeight: 500, color: theme.textPrimary, marginBottom: 6 }}>
+              Discard extracted tokens?
+            </div>
+            <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 16 }}>
+              AI extraction takes 60+ seconds. You'll need to re-extract.
+            </div>
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+              <button
+                className="bg-plugin-add-btn"
+                onClick={() => setConfirmAction(null)}
+                style={{ borderStyle: 'solid', opacity: 1, padding: '8px 16px' }}
+              >
+                Keep reviewing
+              </button>
+              <button
+                className="bg-plugin-export-btn"
+                onClick={confirmDiscard}
+                style={{ background: theme.error, color: '#fff', width: 'auto', padding: '8px 16px' }}
+              >
+                Discard
+              </button>
+            </div>
+          </div>
+        ) : (
+          <ReviewView
+            analysis={result.analysis}
+            onApply={handleApply}
+            onTryAnother={handleTryAnother}
+            onDiscard={handleDiscardReview}
+          />
+        )}
       </Modal>
     );
   }

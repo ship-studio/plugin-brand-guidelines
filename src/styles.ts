@@ -471,6 +471,11 @@ export const BRAND_GUIDELINES_CSS = `
   to { transform: rotate(360deg); }
 }
 
+@keyframes bgPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 .bg-plugin-spinner {
   display: block;
   width: 14px;
@@ -478,6 +483,10 @@ export const BRAND_GUIDELINES_CSS = `
   border: 2px solid;
   border-radius: 50%;
   animation: bgSpin 0.8s linear infinite;
+}
+
+.bg-plugin-step-detail {
+  animation: bgPulse 2s ease-in-out infinite;
 }
 
 /* Error block */
@@ -571,33 +580,38 @@ export const BRAND_GUIDELINES_CSS = `
 
 /* Review view */
 .bg-plugin-review-checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  border-radius: 4px;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 4px !important;
   cursor: pointer;
   flex-shrink: 0;
   position: relative;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.06) !important;
   transition: background 0.12s, border-color 0.12s;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .bg-plugin-review-checkbox:checked {
-  background: var(--checkbox-accent, var(--accent, #6C5CE7));
-  border-color: var(--checkbox-accent, var(--accent, #6C5CE7));
+  background: var(--checkbox-accent, var(--accent, #6C5CE7)) !important;
+  border-color: var(--checkbox-accent, var(--accent, #6C5CE7)) !important;
 }
 
 .bg-plugin-review-checkbox:checked::after {
-  content: '';
+  content: '' !important;
   position: absolute;
   left: 4px;
   top: 1px;
   width: 5px;
   height: 9px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
+  border: solid #fff !important;
+  border-width: 0 2px 2px 0 !important;
   transform: rotate(45deg);
 }
 
@@ -658,6 +672,39 @@ export const BRAND_GUIDELINES_CSS = `
   padding: 10px 16px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
+}
+
+.bg-plugin-usage-summary {
+  margin-bottom: 12px;
+  padding: 0 2px;
+}
+
+.bg-plugin-usage-summary-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  opacity: 0.5;
+}
+
+.bg-plugin-usage-summary-textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px 10px;
+  border: 1px solid;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+}
+
+.bg-plugin-usage-summary-textarea:focus {
+  border-color: var(--accent, #6C5CE7);
 }
 
 .bg-plugin-review-empty {
