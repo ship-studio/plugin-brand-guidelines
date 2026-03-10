@@ -10,12 +10,20 @@ import type { RawColor } from './tokenExtraction';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
+export interface UsageSummaries {
+  colors: string;
+  fonts: string;
+  radii: string;
+  spacing: string;
+}
+
 export interface AnalysisResult {
   colors: Array<{ name: string; hex: string }>;
   fonts: Array<{ role: string; value: string }>;
   voiceNotes: string;
   radii: Array<{ label: string; value: string }>;
   spacing: Array<{ label: string; value: string }>;
+  usageSummaries: UsageSummaries;
 }
 
 interface Shell {
@@ -45,7 +53,12 @@ export function buildPrompt(
   spacing: string[] = [],
 ): string {
   const colorList = colors.length > 0
-    ? colors.map(c => c.varName ? `${c.hex} (${c.varName})` : c.hex).join('\n')
+    ? colors.map(c => {
+        const parts = [c.hex];
+        if (c.varName) parts.push(`var: ${c.varName}`);
+        if (c.count > 1) parts.push(`used ${c.count}x`);
+        return parts.join(' — ');
+      }).join('\n')
     : '(none found)';
 
   const fontList = fonts.length > 0
@@ -74,7 +87,7 @@ ${spacingList}
 
 ## Instructions
 
-1. Select 5-12 of the most meaningful colors from the list above. Assign each a creative semantic name that reflects the brand identity (e.g. "Midnight Navy", "Coral Accent", "Soft Fog"). Exclude near-black (#000000-#111111) and near-white (#fafafa-#ffffff) unless they are clearly intentional brand colors.
+1. Select 5-12 of the most meaningful colors from the list above. Colors are sorted by usage frequency — strongly prefer colors used more often (higher "used Nx" counts) as these are the brand's core palette. Assign each a creative semantic name that reflects the brand identity (e.g. "Midnight Navy", "Coral Accent", "Soft Fog"). Exclude near-black (#000000-#111111) and near-white (#fafafa-#ffffff) unless they are clearly intentional brand colors.
 
 2. Classify each font into a role: Heading, Body, Mono, Display, or Accent.
 
@@ -88,13 +101,16 @@ ${spacingList}
 
 5. Select 4-8 spacing values that form a coherent scale and assign descriptive labels (e.g. 'Tight', 'Base', 'Relaxed', 'Spacious').
 
+6. Generate a usage summary for each token category (colors, fonts, radii, spacing). Each summary should be 2-3 sentences of prose (not bullet points) explaining how to apply those tokens. Reference specific token names and values — for example, 'Use Primary #5C4EFA for CTAs and interactive elements.' Do NOT generate a summary for voiceNotes — the voice notes already serve as usage guidance.
+
 Output ONLY valid JSON matching this exact schema, with no markdown fences and no explanation:
 {
   "colors": [{"name": "string", "hex": "#xxxxxx"}],
   "fonts": [{"role": "string", "value": "string"}],
   "voiceNotes": "string with bullet points using - prefix",
   "radii": [{"label": "string", "value": "string"}],
-  "spacing": [{"label": "string", "value": "string"}]
+  "spacing": [{"label": "string", "value": "string"}],
+  "usageSummaries": {"colors": "string", "fonts": "string", "radii": "string", "spacing": "string"}
 }`;
 
   // Truncate if needed
@@ -117,35 +133,49 @@ Output ONLY valid JSON matching this exact schema, with no markdown fences and n
 export function parseAnalysisResponse(stdout: string): AnalysisResult {
   const trimmed = stdout.trim();
 
+  let parsed: Record<string, unknown> | undefined;
+
   // 1. Try direct parse
   try {
-    return JSON.parse(trimmed) as AnalysisResult;
+    parsed = JSON.parse(trimmed);
   } catch {
     // continue
   }
 
   // 2. Try stripping markdown fences
-  const fenceMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-  if (fenceMatch) {
-    try {
-      return JSON.parse(fenceMatch[1]) as AnalysisResult;
-    } catch {
-      // continue
+  if (!parsed) {
+    const fenceMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (fenceMatch) {
+      try {
+        parsed = JSON.parse(fenceMatch[1]);
+      } catch {
+        // continue
+      }
     }
   }
 
   // 3. Try finding first { and last }
-  const firstBrace = trimmed.indexOf('{');
-  const lastBrace = trimmed.lastIndexOf('}');
-  if (firstBrace !== -1 && lastBrace > firstBrace) {
-    try {
-      return JSON.parse(trimmed.slice(firstBrace, lastBrace + 1)) as AnalysisResult;
-    } catch {
-      // fall through
+  if (!parsed) {
+    const firstBrace = trimmed.indexOf('{');
+    const lastBrace = trimmed.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      try {
+        parsed = JSON.parse(trimmed.slice(firstBrace, lastBrace + 1));
+      } catch {
+        // fall through
+      }
     }
   }
 
-  throw new Error('Failed to parse AI response');
+  if (!parsed) {
+    throw new Error('Failed to parse AI response');
+  }
+
+  // Normalize usageSummaries: default missing fields to empty strings
+  const empty: UsageSummaries = { colors: '', fonts: '', radii: '', spacing: '' };
+  parsed.usageSummaries = { ...empty, ...((parsed.usageSummaries as Partial<UsageSummaries>) || {}) };
+
+  return parsed as unknown as AnalysisResult;
 }
 
 // ── Main Analysis Function ────────────────────────────────────────────────
