@@ -68,6 +68,18 @@ export function ExportFooter({
           </div>
         )}
       </div>
+      {hasData && (syncStatus === 'not-exported' || syncStatus === 'needs-update') && project && (
+        <div style={{
+          fontSize: 11,
+          color: syncStatus === 'not-exported' ? theme.textMuted : STATUS_COLORS['needs-update'],
+          textAlign: 'center',
+          lineHeight: 1.4,
+        }}>
+          {syncStatus === 'not-exported'
+            ? `Your brand guidelines haven\u2019t been added to ${settings.targetFile} yet.`
+            : `Your brand guidelines have changed since the last export.`}
+        </div>
+      )}
       <button
         className="bg-plugin-export-btn"
         onClick={onExport}

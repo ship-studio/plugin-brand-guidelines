@@ -87,7 +87,7 @@ ${spacingList}
 
 ## Instructions
 
-1. Select 5-12 of the most meaningful colors from the list above. Colors are sorted by usage frequency — strongly prefer colors used more often (higher "used Nx" counts) as these are the brand's core palette. Assign each a creative semantic name that reflects the brand identity (e.g. "Midnight Navy", "Coral Accent", "Soft Fog"). Exclude near-black (#000000-#111111) and near-white (#fafafa-#ffffff) unless they are clearly intentional brand colors.
+1. Select 8-15 of the most meaningful colors from the list above. Colors are sorted by usage frequency — strongly prefer colors used more often (higher "used Nx" counts) as these are the brand's core palette. Assign each a creative semantic name that reflects the brand identity (e.g. "Midnight Navy", "Coral Accent", "Soft Fog"). IMPORTANT: You MUST include background and surface colors (whites, near-whites, light grays for light themes; dark colors for dark themes) — these define the brand's visual foundation. Also include text colors. The goal is to capture the complete theme so someone can reproduce the site's look and feel. Name them with their role, e.g. "Page Background", "Card Surface", "Primary Text", "Muted Text".
 
 2. Classify each font into a role: Heading, Body, Mono, Display, or Accent.
 
@@ -101,7 +101,7 @@ ${spacingList}
 
 5. Select 4-8 spacing values that form a coherent scale and assign descriptive labels (e.g. 'Tight', 'Base', 'Relaxed', 'Spacious').
 
-6. Generate a usage summary for each token category (colors, fonts, radii, spacing). Each summary should be 2-3 sentences of prose (not bullet points) explaining how to apply those tokens. Reference specific token names and values — for example, 'Use Primary #5C4EFA for CTAs and interactive elements.' Do NOT generate a summary for voiceNotes — the voice notes already serve as usage guidance.
+6. Generate a usage summary for each token category (colors, fonts, radii, spacing). Each summary should be 2-3 sentences of prose (not bullet points) explaining how to apply those tokens. Reference specific token names and values — for example, 'Use Primary #5C4EFA for CTAs and interactive elements.' The colors summary MUST start by stating the theme direction (light or dark) and which colors to use for page backgrounds, card surfaces, and text — this is critical for reproducing the brand's look. Do NOT generate a summary for voiceNotes — the voice notes already serve as usage guidance.
 
 Output ONLY valid JSON matching this exact schema, with no markdown fences and no explanation:
 {

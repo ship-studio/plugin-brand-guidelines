@@ -19,6 +19,13 @@ import { hasBrandData } from './markdown';
 import type { UsageSummaries } from './analyzeTokens';
 import type { BrandColor, BrandFont, BrandRadius, BrandSpacing } from './types';
 
+const USAGE_SUMMARY_TABS: Record<string, keyof UsageSummaries> = {
+  colors: 'colors',
+  fonts: 'fonts',
+  radii: 'radii',
+  spacing: 'spacing',
+};
+
 type Tab = 'colors' | 'fonts' | 'voice' | 'assets' | 'radii' | 'spacing';
 type ModalView = 'url-cta' | 'tabs' | 'url-inline' | 'extracting' | 'review';
 
@@ -267,6 +274,32 @@ export function BrandModal({ onClose }: { onClose: () => void }) {
         ))}
       </div>
       <div className="bg-plugin-modal-body">
+        {USAGE_SUMMARY_TABS[activeTab] && settings.usageSummaries?.[USAGE_SUMMARY_TABS[activeTab]] && (
+          <div className="bg-plugin-usage-summary" style={{ marginTop: 14 }}>
+            <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>
+              Usage Guide
+            </div>
+            <textarea
+              className="bg-plugin-usage-summary-textarea"
+              style={{ borderColor: theme.border, color: theme.textPrimary }}
+              value={settings.usageSummaries[USAGE_SUMMARY_TABS[activeTab]]}
+              onChange={(e) => {
+                const key = USAGE_SUMMARY_TABS[activeTab];
+                updateSettings(prev => ({
+                  ...prev,
+                  usageSummaries: {
+                    colors: '',
+                    fonts: '',
+                    radii: '',
+                    spacing: '',
+                    ...prev.usageSummaries,
+                    [key]: e.target.value,
+                  },
+                }));
+              }}
+            />
+          </div>
+        )}
         {activeTab === 'colors' && (
           <ColorsSection
             colors={settings.colors}
