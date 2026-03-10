@@ -42,37 +42,37 @@ describe('normalizeToHex', () => {
 describe('extractColors', () => {
   it('extracts 3-digit hex and normalizes', () => {
     const result = extractColors(['a { color: #f00; }']);
-    expect(result).toEqual([{ value: '#f00', hex: '#ff0000' }]);
+    expect(result).toEqual([{ value: '#f00', hex: '#ff0000', count: 1 }]);
   });
 
   it('extracts 6-digit hex', () => {
     const result = extractColors(['a { color: #ff0000; }']);
-    expect(result).toEqual([{ value: '#ff0000', hex: '#ff0000' }]);
+    expect(result).toEqual([{ value: '#ff0000', hex: '#ff0000', count: 1 }]);
   });
 
   it('strips alpha from 8-digit hex', () => {
     const result = extractColors(['a { color: #ff000080; }']);
-    expect(result).toEqual([{ value: '#ff000080', hex: '#ff0000' }]);
+    expect(result).toEqual([{ value: '#ff000080', hex: '#ff0000', count: 1 }]);
   });
 
   it('extracts rgb with comma syntax', () => {
     const result = extractColors(['a { color: rgb(255, 0, 0); }']);
-    expect(result).toEqual([{ value: 'rgb(255, 0, 0)', hex: '#ff0000' }]);
+    expect(result).toEqual([{ value: 'rgb(255, 0, 0)', hex: '#ff0000', count: 1 }]);
   });
 
   it('extracts rgb with space syntax', () => {
     const result = extractColors(['a { color: rgb(255 0 0); }']);
-    expect(result).toEqual([{ value: 'rgb(255 0 0)', hex: '#ff0000' }]);
+    expect(result).toEqual([{ value: 'rgb(255 0 0)', hex: '#ff0000', count: 1 }]);
   });
 
   it('extracts rgb with alpha (space syntax)', () => {
     const result = extractColors(['a { color: rgb(255 0 0 / 0.5); }']);
-    expect(result).toEqual([{ value: 'rgb(255 0 0 / 0.5)', hex: '#ff0000' }]);
+    expect(result).toEqual([{ value: 'rgb(255 0 0 / 0.5)', hex: '#ff0000', count: 1 }]);
   });
 
   it('extracts hsl and converts to hex', () => {
     const result = extractColors(['a { color: hsl(0, 100%, 50%); }']);
-    expect(result).toEqual([{ value: 'hsl(0, 100%, 50%)', hex: '#ff0000' }]);
+    expect(result).toEqual([{ value: 'hsl(0, 100%, 50%)', hex: '#ff0000', count: 1 }]);
   });
 
   it('handles hsl hue wrapping at 360', () => {
@@ -98,7 +98,7 @@ describe('extractColors', () => {
   it('captures CSS custom property names', () => {
     const result = extractColors(['--color-primary: #6C5CE7;']);
     expect(result).toEqual([
-      { value: '#6C5CE7', hex: '#6c5ce7', varName: '--color-primary' },
+      { value: '#6C5CE7', hex: '#6c5ce7', varName: '--color-primary', count: 2 },
     ]);
   });
 

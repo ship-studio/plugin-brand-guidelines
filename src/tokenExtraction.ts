@@ -9,6 +9,8 @@ export interface RawColor {
   value: string;
   hex: string;
   varName?: string;
+  /** Number of times this color appears in the CSS. */
+  count: number;
 }
 
 // ── Named CSS Colors (all 148) ─────────────────────────────────────────────
@@ -183,16 +185,20 @@ export function normalizeToHex(value: string): string | null {
  */
 export function extractColors(cssTexts: string[]): RawColor[] {
   const colors: RawColor[] = [];
-  const seenHex = new Set<string>();
+  const seenHex = new Map<string, number>(); // hex -> index in colors array
   const combined = cssTexts.join('\n');
 
   if (!combined.trim()) return [];
 
   function addColor(value: string, hex: string, varName?: string) {
     const normalizedHex = hex.toLowerCase();
-    if (seenHex.has(normalizedHex)) return;
-    seenHex.add(normalizedHex);
-    const entry: RawColor = { value, hex: normalizedHex };
+    const existing = seenHex.get(normalizedHex);
+    if (existing !== undefined) {
+      colors[existing].count++;
+      return;
+    }
+    seenHex.set(normalizedHex, colors.length);
+    const entry: RawColor = { value, hex: normalizedHex, count: 1 };
     if (varName) entry.varName = varName;
     colors.push(entry);
   }
@@ -238,6 +244,8 @@ export function extractColors(cssTexts: string[]): RawColor[] {
     }
   }
 
+  // Sort by frequency (most used first) so AI prioritizes dominant colors
+  colors.sort((a, b) => b.count - a.count);
   return colors;
 }
 
