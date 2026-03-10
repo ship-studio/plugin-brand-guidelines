@@ -35,6 +35,7 @@ export interface BrandSettings {
   assets: BrandAsset[];
   radii: BrandRadius[];
   spacing: BrandSpacing[];
+  usageSummaries?: import('./analyzeTokens').UsageSummaries;
   targetFile: 'CLAUDE.md' | 'AGENTS.md';
   lastExportedHash: string;
 }

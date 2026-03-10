@@ -71,6 +71,7 @@ export function mergeTokens(
     voiceNotes: string | null;
     radii: BrandRadius[];
     spacing: BrandSpacing[];
+    usageSummaries?: UsageSummaries;
   },
 ): BrandSettings {
   let voiceNotes = existing.voiceNotes;
@@ -90,5 +91,6 @@ export function mergeTokens(
     voiceNotes,
     radii: [...existing.radii, ...accepted.radii],
     spacing: [...existing.spacing, ...accepted.spacing],
+    usageSummaries: accepted.usageSummaries || existing.usageSummaries,
   };
 }

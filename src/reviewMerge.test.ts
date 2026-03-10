@@ -245,6 +245,60 @@ describe('mergeTokens', () => {
     expect(result.lastExportedHash).toBe('abc123');
   });
 
+  it('replaces existing usageSummaries when accepted has usageSummaries', () => {
+    const withSummaries: BrandSettings = {
+      ...baseSettings,
+      usageSummaries: {
+        colors: 'Old color guidance.',
+        fonts: 'Old font guidance.',
+        radii: 'Old radii guidance.',
+        spacing: 'Old spacing guidance.',
+      },
+    };
+    const accepted = {
+      colors: [],
+      fonts: [],
+      voiceNotes: null,
+      radii: [],
+      spacing: [],
+      usageSummaries: {
+        colors: 'New color guidance.',
+        fonts: 'New font guidance.',
+        radii: 'New radii guidance.',
+        spacing: 'New spacing guidance.',
+      },
+    };
+    const result = mergeTokens(withSummaries, accepted);
+    expect(result.usageSummaries).toEqual({
+      colors: 'New color guidance.',
+      fonts: 'New font guidance.',
+      radii: 'New radii guidance.',
+      spacing: 'New spacing guidance.',
+    });
+  });
+
+  it('preserves existing usageSummaries when accepted.usageSummaries is undefined', () => {
+    const existingSummaries = {
+      colors: 'Use Primary for CTAs.',
+      fonts: 'Use Inter for headings.',
+      radii: 'Use 8px for cards.',
+      spacing: 'Use 16px as base unit.',
+    };
+    const withSummaries: BrandSettings = {
+      ...baseSettings,
+      usageSummaries: existingSummaries,
+    };
+    const accepted = {
+      colors: [],
+      fonts: [],
+      voiceNotes: null,
+      radii: [],
+      spacing: [],
+    };
+    const result = mergeTokens(withSummaries, accepted);
+    expect(result.usageSummaries).toEqual(existingSummaries);
+  });
+
   it('handles merging into empty settings', () => {
     const empty: BrandSettings = {
       colors: [],
