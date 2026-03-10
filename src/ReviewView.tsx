@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useTheme } from './context';
 import { prepareTokens } from './reviewMerge';
+import { filterUsageSummary } from './usageSummaryFilter';
 import type { AnalysisResult, UsageSummaries } from './analyzeTokens';
 import type { BrandColor, BrandFont, BrandRadius, BrandSpacing } from './types';
 
@@ -130,6 +131,21 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
     setSpacing((prev) => prev.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
   }, []);
 
+  // Compute displayed summaries filtered by deselected tokens
+  const displayedSummaries = useMemo(() => {
+    const deselectedColors = colors.filter(c => !selected[c.id]).map(c => ({ name: c.name, value: c.hex }));
+    const deselectedFonts = fonts.filter(f => !selected[f.id]).map(f => ({ name: f.role, value: f.value }));
+    const deselectedRadii = radii.filter(r => !selected[r.id]).map(r => ({ name: r.label, value: r.value }));
+    const deselectedSpacing = spacing.filter(s => !selected[s.id]).map(s => ({ name: s.label, value: s.value }));
+
+    return {
+      colors: filterUsageSummary(usageSummaries.colors, deselectedColors),
+      fonts: filterUsageSummary(usageSummaries.fonts, deselectedFonts),
+      radii: filterUsageSummary(usageSummaries.radii, deselectedRadii),
+      spacing: filterUsageSummary(usageSummaries.spacing, deselectedSpacing),
+    };
+  }, [usageSummaries, colors, fonts, radii, spacing, selected]);
+
   // Counts
   const selectedColorIds = colors.filter((c) => selected[c.id]).map((c) => c.id);
   const selectedFontIds = fonts.filter((f) => selected[f.id]).map((f) => f.id);
@@ -150,7 +166,7 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
     const acceptedVoice = voiceSelected ? voiceNotes : null;
     const acceptedRadii = radii.filter((r) => selected[r.id]);
     const acceptedSpacing = spacing.filter((s) => selected[s.id]);
-    onApply(acceptedColors, acceptedFonts, acceptedVoice, acceptedRadii, acceptedSpacing, usageSummaries);
+    onApply(acceptedColors, acceptedFonts, acceptedVoice, acceptedRadii, acceptedSpacing, displayedSummaries);
   };
 
   return (
@@ -227,7 +243,7 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                     <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
                     <textarea
                       className="bg-plugin-usage-summary-textarea"
-                      value={usageSummaries.colors}
+                      value={displayedSummaries.colors}
                       onChange={(e) => updateSummary('colors', e.target.value)}
                       style={{ borderColor: theme.border }}
                     />
@@ -297,7 +313,7 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                     <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
                     <textarea
                       className="bg-plugin-usage-summary-textarea"
-                      value={usageSummaries.fonts}
+                      value={displayedSummaries.fonts}
                       onChange={(e) => updateSummary('fonts', e.target.value)}
                       style={{ borderColor: theme.border }}
                     />
@@ -397,7 +413,7 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                     <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
                     <textarea
                       className="bg-plugin-usage-summary-textarea"
-                      value={usageSummaries.radii}
+                      value={displayedSummaries.radii}
                       onChange={(e) => updateSummary('radii', e.target.value)}
                       style={{ borderColor: theme.border }}
                     />
@@ -457,7 +473,7 @@ export function ReviewView({ analysis, onApply, onTryAnother, onDiscard }: Revie
                     <div className="bg-plugin-usage-summary-label" style={{ color: theme.textMuted }}>Usage guidance</div>
                     <textarea
                       className="bg-plugin-usage-summary-textarea"
-                      value={usageSummaries.spacing}
+                      value={displayedSummaries.spacing}
                       onChange={(e) => updateSummary('spacing', e.target.value)}
                       style={{ borderColor: theme.border }}
                     />
