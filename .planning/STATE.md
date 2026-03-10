@@ -4,7 +4,7 @@ milestone: v1.1
 milestone_name: Usage Guide
 status: executing
 stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-03-10T11:10:28Z"
+last_updated: "2026-03-10T11:12:18.328Z"
 last_activity: 2026-03-10 — Completed plan 07-01 (Usage Guide export)
 progress:
   total_phases: 3
