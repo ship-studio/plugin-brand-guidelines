@@ -26,6 +26,12 @@ const validResult = {
     { role: 'Mono', value: 'Fira Code' },
   ],
   voiceNotes: '- Tone: Professional but approachable',
+  usageSummaries: {
+    colors: 'Use Royal Purple #6c5ce7 for primary CTAs. Mint Green #00b894 works well for success states.',
+    fonts: 'Inter serves as the heading typeface for clear hierarchy. Fira Code is reserved for code blocks.',
+    radii: 'Apply the Button radius for interactive elements. Use Card radius for container components.',
+    spacing: 'Use Base spacing for standard gaps. Tight spacing works for compact UI regions.',
+  },
 };
 
 describe('buildPrompt', () => {
@@ -57,6 +63,19 @@ describe('buildPrompt', () => {
     expect(prompt).toBeTruthy();
     expect(prompt).toContain('Some text');
   });
+
+  it('includes usage summary instruction referencing token names and values', () => {
+    const prompt = buildPrompt(sampleColors, sampleFonts, sampleText);
+    expect(prompt).toContain('usage summary');
+    expect(prompt).toContain('token names and values');
+    expect(prompt).toContain('2-3 sentences');
+  });
+
+  it('includes usageSummaries in JSON schema', () => {
+    const prompt = buildPrompt(sampleColors, sampleFonts, sampleText);
+    expect(prompt).toContain('"usageSummaries"');
+    expect(prompt).toMatch(/"usageSummaries".*"colors".*"fonts".*"radii".*"spacing"/s);
+  });
 });
 
 describe('parseAnalysisResponse', () => {
@@ -81,6 +100,35 @@ describe('parseAnalysisResponse', () => {
 
   it('throws on unparseable response', () => {
     expect(() => parseAnalysisResponse('not json at all')).toThrow('Failed to parse AI response');
+  });
+
+  it('preserves usageSummaries when present in response', () => {
+    const result = parseAnalysisResponse(JSON.stringify(validResult));
+    expect(result.usageSummaries).toBeDefined();
+    expect(result.usageSummaries.colors).toContain('Royal Purple');
+    expect(result.usageSummaries.fonts).toContain('Inter');
+    expect(result.usageSummaries.radii).toContain('Button');
+    expect(result.usageSummaries.spacing).toContain('Base');
+  });
+
+  it('defaults to empty strings when usageSummaries is missing', () => {
+    const { usageSummaries: _, ...withoutSummaries } = validResult;
+    const result = parseAnalysisResponse(JSON.stringify(withoutSummaries));
+    expect(result.usageSummaries).toEqual({
+      colors: '',
+      fonts: '',
+      radii: '',
+      spacing: '',
+    });
+  });
+
+  it('defaults individual fields when usageSummaries is partially present', () => {
+    const partial = { ...validResult, usageSummaries: { colors: 'Only colors provided' } };
+    const result = parseAnalysisResponse(JSON.stringify(partial));
+    expect(result.usageSummaries.colors).toBe('Only colors provided');
+    expect(result.usageSummaries.fonts).toBe('');
+    expect(result.usageSummaries.radii).toBe('');
+    expect(result.usageSummaries.spacing).toBe('');
   });
 });
 
