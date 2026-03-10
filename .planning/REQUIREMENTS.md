@@ -19,8 +19,8 @@ Requirements for Usage Guide milestone. Each maps to roadmap phases.
 
 ### Export
 
-- [ ] **EX-01**: Exported markdown includes a "Usage Guide" section with per-category usage guidance
-- [ ] **EX-02**: Usage guide only references tokens the user actually accepted (not rejected ones)
+- [x] **EX-01**: Exported markdown includes a "Usage Guide" section with per-category usage guidance
+- [x] **EX-02**: Usage guide only references tokens the user actually accepted (not rejected ones)
 
 ## Future Requirements
 
@@ -47,8 +47,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AI-02 | Phase 5 | Complete |
 | RV-01 | Phase 6 | Complete |
 | RV-02 | Phase 6 | Complete |
-| EX-01 | Phase 7 | Pending |
-| EX-02 | Phase 7 | Pending |
+| EX-01 | Phase 7 | Complete |
+| EX-02 | Phase 7 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 6 total
