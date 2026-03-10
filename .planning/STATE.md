@@ -4,7 +4,7 @@ milestone: v1.1
 milestone_name: Usage Guide
 status: executing
 stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-03-10T10:06:12.387Z"
+last_updated: "2026-03-10T10:08:13.674Z"
 last_activity: 2026-03-10 — Completed plan 05-02 (handoff wiring and UX hint)
 progress:
   total_phases: 3
