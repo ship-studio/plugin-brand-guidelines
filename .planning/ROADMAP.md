@@ -47,11 +47,11 @@ Plans:
   1. Each review tab (Colors, Fonts, Radii, Spacing, Voice) displays an editable usage summary at the top
   2. When a user deselects a token, the usage summary updates to remove references to that token
   3. Users can freely edit the usage summary text before accepting
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
+- [ ] 06-01-PLAN.md — Display editable usage summaries in review tabs and wire through onApply
+- [ ] 06-02-PLAN.md — TDD filterUsageSummary and integrate token-aware filtering into ReviewView
 
 ### Phase 7: Export with Usage Guide
 **Goal**: Exported brand guidelines include a Usage Guide section that explains how to apply each token category
@@ -77,5 +77,5 @@ Plans:
 | 3. Review UI and Entry Points | v1.0 | 2/2 | Complete | 2026-03-08 |
 | 4. Border Radius and Spacing | v1.0 | 2/2 | Complete | 2026-03-08 |
 | 5. Usage Summary Generation | v1.1 | 1/2 | In progress | - |
-| 6. Review UI for Usage Summaries | v1.1 | 0/? | Not started | - |
+| 6. Review UI for Usage Summaries | v1.1 | 0/2 | Not started | - |
 | 7. Export with Usage Guide | v1.1 | 0/? | Not started | - |
