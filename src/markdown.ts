@@ -70,6 +70,32 @@ export function generateBrandMarkdown(settings: BrandSettings): string {
     );
   }
 
+  // Usage Guide (only when usageSummaries exist and have content)
+  if (settings.usageSummaries) {
+    const categoryMap: Array<{
+      key: keyof typeof settings.usageSummaries;
+      display: string;
+      hasTokens: boolean;
+    }> = [
+      { key: 'colors', display: 'Colors', hasTokens: validColors.length > 0 },
+      { key: 'fonts', display: 'Fonts', hasTokens: validFonts.length > 0 },
+      { key: 'radii', display: 'Border Radii', hasTokens: validRadii.length > 0 },
+      { key: 'spacing', display: 'Spacing', hasTokens: validSpacing.length > 0 },
+    ];
+
+    const usageSubsections: string[] = [];
+    for (const cat of categoryMap) {
+      const summary = settings.usageSummaries[cat.key]?.trim();
+      if (summary && cat.hasTokens) {
+        usageSubsections.push(`#### ${cat.display}\n\n${summary}`);
+      }
+    }
+
+    if (usageSubsections.length > 0) {
+      sections.push('### Usage Guide\n\n' + usageSubsections.join('\n\n'));
+    }
+  }
+
   if (sections.length === 0) return '';
 
   return '## Brand Guidelines\n\n' + sections.join('\n\n');
