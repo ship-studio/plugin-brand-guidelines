@@ -55,7 +55,7 @@ export async function fetchHtml(
       '-D', '/dev/stderr',
       url,
     ],
-    { timeout: 35000 },
+    { timeout: 35 },
   );
 
   const err = curlError(result.exit_code, result.stderr);
@@ -81,7 +81,7 @@ export async function fetchCss(shell: Shell, url: string): Promise<string> {
       '-A', USER_AGENT,
       url,
     ],
-    { timeout: 35000 },
+    { timeout: 35 },
   );
 
   const err = curlError(result.exit_code, result.stderr);

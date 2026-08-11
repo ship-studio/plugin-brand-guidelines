@@ -197,7 +197,7 @@ export async function analyzeTokens(
   const result = await shell.exec(
     'claude',
     ['-p', prompt, '--max-turns', '1', '--output-format', 'text'],
-    { timeout: 120000 },
+    { timeout: 120 },
   );
 
   if (result.exit_code !== 0) {
@@ -213,7 +213,7 @@ export async function analyzeTokens(
     const retry = await shell.exec(
       'claude',
       ['-p', strictPrompt, '--max-turns', '1', '--output-format', 'text'],
-      { timeout: 120000 },
+      { timeout: 120 },
     );
 
     if (retry.exit_code !== 0) {

@@ -145,7 +145,7 @@ describe('analyzeTokens', () => {
     expect(shell.exec).toHaveBeenCalledWith(
       'claude',
       expect.arrayContaining(['-p', '--max-turns', '1', '--output-format', 'text']),
-      { timeout: 120000 },
+      { timeout: 120 },
     );
   });
 

@@ -8,6 +8,7 @@ import {
   extractBetweenMarkers,
   hasBrandData,
 } from './markdown';
+import { readFile, fileExists, fileWritable, formatError } from './shellFs';
 
 export type SyncStatus = 'none' | 'not-exported' | 'in-sync' | 'needs-update';
 
@@ -33,14 +34,14 @@ export function useFileSync(
     }
 
     const filePath = `${project.path}/${settings.targetFile}`;
-    const exists = await shell.exec('test', ['-f', filePath]);
+    const exists = await fileExists(shell, filePath, { timeout: 10 });
 
-    if (exists.exit_code !== 0) {
+    if (!exists) {
       setSyncStatus(settings.lastExportedHash ? 'needs-update' : 'not-exported');
       return;
     }
 
-    const result = await shell.exec('cat', [filePath]);
+    const result = await readFile(shell, filePath, { timeout: 10 });
     if (result.exit_code !== 0) {
       setSyncStatus('not-exported');
       return;
@@ -82,16 +83,16 @@ export function useFileSync(
 
       // Check if file exists and read it
       let existingContent: string | null = null;
-      const exists = await shell.exec('test', ['-f', filePath]);
-      if (exists.exit_code === 0) {
+      const exists = await fileExists(shell, filePath, { timeout: 10 });
+      if (exists) {
         // Check writable
-        const writable = await shell.exec('test', ['-w', filePath]);
-        if (writable.exit_code !== 0) {
+        const writable = await fileWritable(shell, filePath, { timeout: 10 });
+        if (!writable) {
           showToast(`${settings.targetFile} is not writable`, 'error');
           setExporting(false);
           return;
         }
-        const readResult = await shell.exec('cat', [filePath]);
+        const readResult = await readFile(shell, filePath, { timeout: 10 });
         if (readResult.exit_code === 0) {
           existingContent = readResult.stdout;
         }
@@ -111,7 +112,7 @@ export function useFileSync(
         `require("fs").writeFileSync(process.argv[1], Buffer.from(process.argv[2], "base64"))`,
         filePath,
         encoded,
-      ]);
+      ], { timeout: 15 });
 
       if (writeResult.exit_code !== 0) {
         showToast(`Failed to write ${settings.targetFile}: ${writeResult.stderr}`, 'error');
@@ -127,7 +128,7 @@ export function useFileSync(
         'success',
       );
     } catch (err) {
-      showToast(`Export failed: ${err}`, 'error');
+      showToast(`Export failed: ${formatError(err)}`, 'error');
     } finally {
       setExporting(false);
     }

@@ -2368,6 +2368,34 @@ function useBrandSettings() {
   );
   return { settings, updateSettings, setLastExportedHash, loaded, dirty };
 }
+function readFile(shell, path, options) {
+  const script = `try{process.stdout.write(require('fs').readFileSync(process.argv[1],'utf8'))}catch(e){process.exit(1)}`;
+  return shell.exec("node", ["-e", script, path], options ?? { timeout: 10 });
+}
+async function fileExists(shell, path, options) {
+  const script = `process.exit(require('fs').statSync(process.argv[1],{throwIfNoEntry:false})?.isFile()?0:1)`;
+  const result = await shell.exec("node", ["-e", script, path], options ?? { timeout: 10 });
+  return result.exit_code === 0;
+}
+async function fileWritable(shell, path, options) {
+  const script = `const fs=require('fs');try{fs.accessSync(process.argv[1],fs.constants.W_OK)}catch(e){process.exit(1)}`;
+  const result = await shell.exec("node", ["-e", script, path], options ?? { timeout: 10 });
+  return result.exit_code === 0;
+}
+function formatError(err) {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "string") return err;
+  if (err && typeof err === "object") {
+    const obj = err;
+    if (typeof obj.message === "string" && obj.message.trim()) return obj.message;
+    if (typeof obj.stderr === "string" && obj.stderr.trim()) return obj.stderr;
+    try {
+      return JSON.stringify(err);
+    } catch {
+    }
+  }
+  return String(err);
+}
 function useFileSync(settings, setLastExportedHash) {
   const shell = useShell();
   const project = useProject();
@@ -2384,12 +2412,12 @@ function useFileSync(settings, setLastExportedHash) {
       return;
     }
     const filePath = `${project.path}/${settings.targetFile}`;
-    const exists = await shell.exec("test", ["-f", filePath]);
-    if (exists.exit_code !== 0) {
+    const exists = await fileExists(shell, filePath, { timeout: 10 });
+    if (!exists) {
       setSyncStatus(settings.lastExportedHash ? "needs-update" : "not-exported");
       return;
     }
-    const result = await shell.exec("cat", [filePath]);
+    const result = await readFile(shell, filePath, { timeout: 10 });
     if (result.exit_code !== 0) {
       setSyncStatus("not-exported");
       return;
@@ -2423,15 +2451,15 @@ function useFileSync(settings, setLastExportedHash) {
       }
       const filePath = `${project.path}/${settings.targetFile}`;
       let existingContent = null;
-      const exists = await shell.exec("test", ["-f", filePath]);
-      if (exists.exit_code === 0) {
-        const writable = await shell.exec("test", ["-w", filePath]);
-        if (writable.exit_code !== 0) {
+      const exists = await fileExists(shell, filePath, { timeout: 10 });
+      if (exists) {
+        const writable = await fileWritable(shell, filePath, { timeout: 10 });
+        if (!writable) {
           showToast(`${settings.targetFile} is not writable`, "error");
           setExporting(false);
           return;
         }
-        const readResult = await shell.exec("cat", [filePath]);
+        const readResult = await readFile(shell, filePath, { timeout: 10 });
         if (readResult.exit_code === 0) {
           existingContent = readResult.stdout;
         }
@@ -2445,7 +2473,7 @@ function useFileSync(settings, setLastExportedHash) {
         `require("fs").writeFileSync(process.argv[1], Buffer.from(process.argv[2], "base64"))`,
         filePath,
         encoded
-      ]);
+      ], { timeout: 15 });
       if (writeResult.exit_code !== 0) {
         showToast(`Failed to write ${settings.targetFile}: ${writeResult.stderr}`, "error");
         setExporting(false);
@@ -2459,7 +2487,7 @@ function useFileSync(settings, setLastExportedHash) {
         "success"
       );
     } catch (err) {
-      showToast(`Export failed: ${err}`, "error");
+      showToast(`Export failed: ${formatError(err)}`, "error");
     } finally {
       setExporting(false);
     }
@@ -2492,7 +2520,7 @@ async function fetchHtml(shell, url) {
       "/dev/stderr",
       url
     ],
-    { timeout: 35e3 }
+    { timeout: 35 }
   );
   const err = curlError(result.exit_code, result.stderr);
   if (err) throw err;
@@ -2514,7 +2542,7 @@ async function fetchCss(shell, url) {
       USER_AGENT,
       url
     ],
-    { timeout: 35e3 }
+    { timeout: 35 }
   );
   const err = curlError(result.exit_code, result.stderr);
   if (err) throw err;
@@ -3055,7 +3083,7 @@ async function analyzeTokens(shell, colors, fonts, visibleText, radii = [], spac
   const result = await shell.exec(
     "claude",
     ["-p", prompt, "--max-turns", "1", "--output-format", "text"],
-    { timeout: 12e4 }
+    { timeout: 120 }
   );
   if (result.exit_code !== 0) {
     throw new Error(result.stderr || "Claude CLI exited with error");
@@ -3067,7 +3095,7 @@ async function analyzeTokens(shell, colors, fonts, visibleText, radii = [], spac
     const retry = await shell.exec(
       "claude",
       ["-p", strictPrompt, "--max-turns", "1", "--output-format", "text"],
-      { timeout: 12e4 }
+      { timeout: 120 }
     );
     if (retry.exit_code !== 0) {
       throw new Error(retry.stderr || "Claude CLI exited with error");
@@ -3095,7 +3123,7 @@ function updateStep(steps, id, update) {
   return steps.map((s) => s.id === id ? { ...s, ...update } : s);
 }
 function mapError(err) {
-  const message = err instanceof Error ? err.message : String(err);
+  const message = formatError(err);
   if (message.includes("took too long")) {
     return { headline: "Connection timed out", detail: message };
   }

@@ -30,7 +30,7 @@ describe('fetchHtml', () => {
         '-D', '/dev/stderr',
         'https://example.com',
       ]),
-      { timeout: 35000 },
+      { timeout: 35 },
     );
 
     // URL must be a separate array element, never interpolated
@@ -90,7 +90,7 @@ describe('fetchCss', () => {
     expect(shell.exec).toHaveBeenCalledWith(
       'curl',
       expect.arrayContaining(['https://example.com/style.css']),
-      expect.objectContaining({ timeout: 35000 }),
+      expect.objectContaining({ timeout: 35 }),
     );
   });
 
