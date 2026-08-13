@@ -3,6 +3,7 @@ import { useShell } from './context';
 import { fetchHtml, fetchCss, extractStylesheetUrls, detectBotProtection } from './fetchUtils';
 import { extractColors, extractFonts, extractRadii, extractSpacing, extractVisibleText, extractEmbeddedStyles } from './tokenExtraction';
 import { analyzeTokens, type AnalysisResult } from './analyzeTokens';
+import { formatError } from './shellFs';
 
 export interface ExtractionStep {
   id: string;
@@ -54,7 +55,7 @@ function updateStep(
  * Map known error messages to user-friendly headlines.
  */
 function mapError(err: unknown): { headline: string; detail: string } {
-  const message = err instanceof Error ? err.message : String(err);
+  const message = formatError(err);
 
   if (message.includes('took too long')) {
     return { headline: 'Connection timed out', detail: message };
